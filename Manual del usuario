@@ -1,0 +1,522 @@
+📘 MANUAL DE USUARIO
+Sistema de Gestión Escolar - I.E. Augusto B. Leguía
+________________________________________
+<div align="center"> 
+🎓 Versión 1.0.0 | Julio 2026
+Institución Educativa "Augusto B. Leguía"
+Alma Mater del Distrito de Mochumí
+________________________________________
+ 
+ 
+ 
+</div> 
+________________________________________
+📋 TABLA DE CONTENIDOS
+1.	Introducción
+2.	Requisitos del Sistema
+3.	Acceso al Sistema
+4.	Panel del Director
+5.	Panel del Profesor
+6.	Panel del Estudiante
+7.	Panel del Apoderado
+8.	Plan de Prevención
+9.	Preguntas Frecuentes
+10.	Solución de Problemas
+11.	Glosario
+________________________________________
+1. 📖 INTRODUCCIÓN
+1.1 ¿Qué es el Sistema de Gestión Escolar?
+El Sistema de Gestión Escolar es una plataforma web desarrollada para la I.E. Augusto B. Leguía del distrito de Mochumí, que permite gestionar de forma centralizada todos los procesos académicos y administrativos de la institución.
+1.2 Objetivos del Sistema
+•	✅ Digitalizar la gestión de estudiantes, profesores y apoderados
+•	✅ Facilitar el registro y consulta de notas y asistencia
+•	✅ Mejorar la comunicación mediante comunicados institucionales
+•	✅ Automatizar el cálculo de promedios y estados académicos
+•	✅ Implementar un Plan de Prevención integral
+1.3 Usuarios del Sistema
+El sistema cuenta con 4 tipos de usuarios, cada uno con permisos y funcionalidades específicas:
+Rol	Descripción	Acceso
+👔 Director	Administrador del sistema	Total
+👨‍🏫 Profesor	Docente a cargo de cursos	Gestión académica
+👨‍🎓 Estudiante	Alumno matriculado	Consulta personal
+👨‍👩‍👧 Apoderado	Padre o tutor	Seguimiento
+________________________________________
+2. 💻 REQUISITOS DEL SISTEMA
+2.1 Requisitos Técnicos
+Componente	Requisito Mínimo	Recomendado
+Navegador	Chrome 90+, Firefox 88+, Edge 90+	Última versión
+Resolución	1024 x 768	1920 x 1080
+Conexión	No requiere internet	Internet estable
+Dispositivo	PC, Laptop, Tablet, Móvil	PC/Laptop
+2.2 Navegadores Compatibles
+•	✅ Google Chrome
+•	✅ Mozilla Firefox
+•	✅ Microsoft Edge
+•	✅ Safari
+•	✅ Opera
+________________________________________
+3. 🔐 ACCESO AL SISTEMA
+3.1 Pantalla de Login
+Al abrir el sistema, verás la pantalla principal de inicio de sesión:
+┌─────────────────────────────────────────────────────────┐
+│                                                         │
+│   ┌──────────────────────┐   ┌──────────────────────┐  │
+│   │                      │   │                      │  │
+│   │   LOGO INSTITUCIONAL │   │  I.E. Augusto B.     │  │
+│   │                      │   │  Sistema de Gestión  │  │
+│   │   [Imagen de         │   │                      │  │
+│   │    graduación]       │   │  Tipo de Usuario ▼   │  │
+│   │                      │   │  Correo: [________]  │  │
+│   │                      │   │  Contraseña: [_____] │  │
+│   │                      │   │                      │  │
+│   │                      │   │  [INICIAR SESIÓN]    │  │
+│   │                      │   │                      │  │
+│   └──────────────────────┘   └──────────────────────┘  │
+│                                                         │
+└─────────────────────────────────────────────────────────┘
+ 3.2 Pasos para Iniciar Sesión
+Paso 1: Abrir el archivo index.html en tu navegador
+Paso 2: Seleccionar el Tipo de Usuario en el menú desplegable:
+•	Director
+•	Profesor
+•	Estudiante
+•	Apoderado
+Paso 3: Ingresar el Correo electrónico
+Paso 4: Ingresar la Contraseña
+Paso 5: Hacer clic en el botón "Iniciar Sesión"
+3.3 Usuarios de Prueba
+Rol	Correo	Contraseña
+👔 Director	director@ieleguia.edu.pe	director
+👨‍🏫 Profesor	justin@email.com	justin
+👨‍🏫 Profesor	maria@email.com	maria
+👨‍🏫 Profesor	juan@email.com	juan
+👨‍🏫 Profesor	junior@email.com	junior
+👨‍🎓 Estudiante	richard@email.com	richard
+👨‍🎓 Estudiante	lucia@email.com	lucia
+👨‍🎓 Estudiante	jose@email.com	jose
+👨‍🎓 Estudiante	laura@email.com	laura
+👨‍🎓 Estudiante	david@email.com	david
+👨‍👩‍👧 Apoderado	oscar@email.com	oscar
+👨‍👩‍👧 Apoderado	felipe@email.com	felipe
+3.4 Cerrar Sesión
+Para cerrar sesión:
+1.	Ubicar el menú lateral izquierdo
+2.	Hacer clic en el botón rojo "Salir" en la parte inferior
+3.	El sistema cerrará la sesión y volverá al login
+________________________________________
+4. 👔 PANEL DEL DIRECTOR
+El Director tiene acceso total al sistema, incluyendo gestión de usuarios, cursos, comunicados y el Plan de Prevención.
+4.1 Dashboard Principal
+Al iniciar sesión como Director, verás:
+[☰]                              [Comunicados] [D ▼]  │
+├────────┬────────────────────────────────────────────────┤
+│        │                                                │
+│ LOGO   │   PANEL DEL DIRECTOR                          │
+│ I.E.   │                                                │
+│        │   ┌──────┐ ┌──────┐ ┌──────┐ ┌──────┐        │
+│Director│   │  4   │ │  4   │ │  5   │ │  3   │        │
+│        │   │Cursos│ │Profs │ │Estud │ │Comun │        │
+│ 🏠Inicio│   └──────┘ └──────┘ └──────┘ └──────┘        │
+│ 📚Cursos│                                                │
+│ 👥Profs │                                                │
+│ 👥Estud │                                                │
+│ 👥Apo   │                                                │
+│ 📅Agen  │                                                │
+│ 📢Comun │                                                │
+│        │                                                │
+│ [Salir]│                                                │
+└────────┴──────────────────────────
+4.2 Módulo de Cursos
+Ubicación: Menú lateral → Cursos
+Funcionalidades:
+•	✅ Ver todos los cursos registrados
+•	✅ Agregar nuevos cursos
+•	✅ Agregar secciones
+•	✅ Agregar horarios
+Cómo agregar un curso:
+Paso 1: Hacer clic en el botón azul "Agregar Curso"
+Paso 2: Completar el formulario:
+•	Nombre del Curso: Ej. "Matemáticas"
+•	Profesor: Seleccionar del listado
+•	Sección: A, B o C
+•	Turno: Mañana o Tarde
+•	Periodo: 2026-1 o 2026-2
+Paso 3: Hacer clic en "Guardar"
+Cómo editar un curso:
+Paso 1: Ubicar el curso en la lista Paso 2: Hacer clic en el ícono ✏️ (lápiz azul) Paso 3: Modificar los datos Paso 4: Hacer clic en "Guardar"
+Cómo eliminar un curso:
+Paso 1: Ubicar el curso Paso 2: Hacer clic en el ícono 🗑️ (basura roja) Paso 3: Confirmar la eliminación
+4.3 Módulo de Profesores
+Ubicación: Menú lateral → Profesores
+Tabla de Profesores:
+Columna	Descripción
+ID	Identificador único
+DNI	Documento de identidad (8 dígitos)
+Nombre	Nombre del profesor
+Apellido	Apellido del profesor
+Correo	Email institucional
+Curso	Curso asignado
+Acciones	Editar / Eliminar
+Cómo agregar un profesor:
+Paso 1: Clic en "Agregar Profesor" Paso 2: Completar el formulario:
+•	DNI (8 dígitos)
+•	Correo electrónico
+•	Nombre y Apellido
+•	Contraseña
+•	Curso asignado Paso 3: Clic en "Guardar"
+4.4 Módulo de Estudiantes
+Ubicación: Menú lateral → Estudiantes
+Cómo agregar un estudiante:
+Paso 1: Clic en "Agregar Estudiante" Paso 2: Completar:
+•	DNI (8 dígitos)
+•	Correo
+•	Nombre y Apellido
+•	Fecha de Nacimiento
+•	Grado (1° a 5° Secundaria)
+•	Sección (A, B, C)
+•	Contraseña Paso 3: Clic en "Guardar"
+4.5 Módulo de Apoderados
+Ubicación: Menú lateral → Apoderados
+Cómo agregar un apoderado:
+Paso 1: Clic en "Agregar Apoderado" Paso 2: Completar:
+•	DNI
+•	Correo
+•	Nombre y Apellido
+•	Estudiante a Cargo (seleccionar del listado)
+•	Contraseña Paso 3: Clic en "Guardar"
+4.6 Módulo de Agenda
+Ubicación: Menú lateral → Agenda
+Cómo agregar un evento:
+Paso 1: Clic en "Agregar Evento" Paso 2: Completar:
+•	Fecha del evento
+•	Nombre del evento
+•	Descripción Paso 3: Clic en "Guardar"
+4.7 Módulo de Comunicados
+Ubicación: Menú lateral → Comunicados
+Cómo publicar un comunicado:
+Paso 1: Clic en "Agregar Comunicado" Paso 2: Completar:
+•	Fecha
+•	Mensaje del comunicado Paso 3: Clic en "Publicar"
+Los comunicados aparecen ordenados del más reciente al más antiguo.
+________________________________________
+5. 👨‍🏫 PANEL DEL PROFESOR
+El Profesor tiene acceso a sus cursos asignados, gestión de asistencia y notas.
+5.1 Dashboard del Profesor
+Al iniciar sesión como Profesor, verás:
+•	Cursos asignados
+•	Total de estudiantes
+•	Promedio general
+•	Comunicados recientes
+5.2 Módulo de Mis Cursos
+Muestra las tarjetas de los cursos que el profesor tiene asignados con:
+•	Nombre del curso
+•	Sección y turno
+•	Color identificativo
+5.3 Módulo de Asistencia
+Ubicación: Menú lateral → Asistencia
+Cómo registrar asistencia:
+Paso 1: Seleccionar el Curso en el filtro superior Paso 2: Seleccionar la Sección Paso 3: Verificar la Fecha (por defecto es hoy)
+Paso 4: Para cada estudiante, hacer clic en uno de los 4 botones:
+•	✅ ✓ (verde) → Presente
+•	❌ ✗ (rojo) → Ausente
+•	⏱️ ⏱ (naranja) → Tardanza
+•	📘 J (azul) → Justificado
+Paso 5: Verificar que todos los estudiantes tengan estado Paso 6: Hacer clic en "Registrar"
+Estados de Asistencia:
+Estado	Color	Descripción
+Presente	🟢 Verde	Estudiante llegó a tiempo
+Ausente	🔴 Rojo	Estudiante no asistió
+Tardanza	🟠 Naranja	Estudiante llegó tarde
+Justificado	🔵 Azul	Ausencia con justificación
+5.4 Módulo de Notas
+Ubicación: Menú lateral → Notas
+Cómo registrar notas:
+Paso 1: Seleccionar el Curso Paso 2: Seleccionar el Periodo (1, 2 o 3) Paso 3: Ingresar las calificaciones:
+•	Cal. 1: Primera evaluación (0-20)
+•	Cal. 2: Segunda evaluación (0-20)
+•	Cal. 3: Tercera evaluación (0-20)
+Paso 4: El sistema calculará automáticamente el Promedio Paso 5: El sistema mostrará el Estado:
+•	🟢 Aprobado (promedio ≥ 11)
+•	🔴 Desaprobado (promedio < 11)
+Paso 6: Hacer clic en "Guardar"
+Ejemplo de registro de notas:
+Estudiante	Cal. 1	Cal. 2	Cal. 3	Promedio	Estado
+Richard Valdera	15	16	14	15.0	✅ Aprobado
+Lucia Fernandez	14	15	16	15.0	✅ Aprobado
+Jose Ramirez	13	14	15	14.0	✅ Aprobado
+5.5 Módulo de Horario
+Muestra el horario semanal del profesor con:
+•	Días: Lunes a Viernes
+•	Horas: 8:00 - 15:50
+•	Cursos asignados en cada horario
+5.6 Módulo de Estudiantes
+Lista completa de estudiantes con opción de búsqueda.
+5.7 Módulo de Comunicados
+El profesor puede:
+•	Ver todos los comunicados institucionales
+•	Publicar nuevos comunicados
+________________________________________
+6. 👨‍🎓 PANEL DEL ESTUDIANTE
+El Estudiante tiene acceso a consulta de su información académica personal.
+6.1 Dashboard del Estudiante
+Muestra:
+•	Cursos matriculados
+•	Promedio general
+•	Asistencias registradas
+•	Comunicados recientes
+6.2 Módulo de Mis Cursos
+Tarjetas con los cursos en los que el estudiante está matriculado:
+•	Nombre del curso
+•	Profesor asignado
+•	Grado y sección
+6.3 Módulo de Mis Notas
+Ubicación: Menú lateral → Notas
+Tabla con las calificaciones del estudiante:
+Curso	Cal. 1	Cal. 2	Cal. 3	Promedio	Estado
+Matemáticas	15	16	14	15.0	✅ Aprobado
+Lengua	14	15	16	15.0	✅ Aprobado
+Historia	13	14	15	14.0	✅ Aprobado
+Ciencias	16	15	17	16.0	✅ Aprobado
+6.4 Módulo de Mi Asistencia
+Registro personal de asistencias por curso y fecha:
+Fecha	Curso	Estado
+02/12/2026	Matemáticas	🟢 Presente
+02/12/2026	Lengua	🟢 Presente
+03/12/2026	Historia	🔴 Ausente
+03/12/2026	Ciencias	🟠 Tardanza
+04/12/2026	Matemáticas	🟢 Presente
+6.5 Módulo de Mi Horario
+Horario personal del estudiante con todas sus clases.
+6.6 Módulo de Agenda
+Eventos escolares programados con fecha y descripción.
+6.7 Módulo de Comunicados
+Comunicados institucionales publicados por el Director.
+6.8 Módulo de Mi Perfil
+Información personal del estudiante:
+•	DNI
+•	Correo
+•	Grado
+•	Sección
+•	Tutor/Apoderado asignado
+________________________________________
+7. 👨‍👩‍👧 PANEL DEL APODERADO
+El Apoderado tiene acceso a la información académica del estudiante a su cargo.
+7.1 Dashboard del Apoderado
+Muestra información del estudiante a cargo:
+•	Cursos del estudiante
+•	Promedio del estudiante
+•	Asistencias del estudiante
+•	Comunicados
+7.2 Módulos Disponibles
+El apoderado puede consultar:
+Módulo	Descripción
+📚 Cursos	Cursos del estudiante a cargo
+📝 Notas	Calificaciones del estudiante
+✅ Asistencia	Registro de asistencia
+🕐 Horario	Horario de clases
+📅 Agenda	Eventos escolares
+📢 Comunicados	Comunicados institucionales
+👤 Perfil	Información del apoderado
+7.3 Consultar Notas del Estudiante
+Paso 1: Ir al menú "Notas" Paso 2: Ver la tabla con las calificaciones Paso 3: Revisar promedios y estados
+7.4 Consultar Asistencia
+Paso 1: Ir al menú "Asistencia" Paso 2: Ver el registro completo Paso 3: Identificar ausencias o tardanzas
+________________________________________
+8. 🛡️ PLAN DE PREVENCIÓN
+El sistema incluye un Plan de Prevención de Incidentes completo, accesible solo para el Director.
+8.1 Módulos del Plan de Prevención
+Módulo	Descripción
+📊 Monitoreo	Métricas del sistema en tiempo real
+⚠️ Riesgos	Matriz de riesgos con mapa de calor
+🔐 Seguridad	Estado de seguridad y encriptación
+💾 Backups	Plan de contingencia y restauración
+✅ Pruebas	Pruebas unitarias de calidad
+🏷️ Versiones	Control de versiones y rollback
+8.2 Módulo de Monitoreo
+Muestra métricas en tiempo real:
+•	Tiempo de respuesta
+•	Uso de CPU
+•	Memoria usada
+•	Disponibilidad del sistema
+•	Registros totales
+•	Tamaño de datos
+También incluye un registro de actividad con logs del sistema.
+8.3 Módulo de Riesgos
+Matriz de Riesgos 5x5 con mapa de calor que clasifica los riesgos según:
+•	Probabilidad (1-5)
+•	Impacto (1-5)
+Niveles de riesgo:
+•	🔴 Crítico (rojo)
+•	🟠 Alto (naranja)
+•	🔵 Medio (azul)
+•	🟢 Bajo (verde)
+8.4 Módulo de Seguridad
+Muestra:
+•	Estado de autenticación
+•	Control de roles
+•	Encriptación de datos
+•	Distribución de usuarios por rol
+8.5 Módulo de Backups
+Permite:
+•	Crear backup manual con un clic
+•	Ver historial de backups
+•	Restaurar desde un backup
+•	Eliminar backups antiguos
+8.6 Módulo de Pruebas
+Ejecuta pruebas unitarias automáticas:
+•	Cálculo de promedios
+•	Validación de DNI
+•	Validación de email
+•	Encriptación
+•	Persistencia de datos
+8.7 Módulo de Versiones
+Timeline con el historial de versiones del sistema, permitiendo:
+•	Ver cambios por versión
+•	Identificar la versión actual
+•	Conocer el historial de despliegues
+________________________________________
+9. ❓ PREGUNTAS FRECUENTES
+P1: ¿Cómo recupero mi contraseña si la olvidé?
+R: Por el momento, debes contactar al Director del sistema para que restablezca tu contraseña.
+P2: ¿Puedo usar el sistema desde mi celular?
+R: Sí, el sistema es responsive y se adapta a pantallas de celulares y tablets.
+P3: ¿Se guardan mis datos si cierro el navegador?
+R: Sí, los datos se guardan en el localStorage del navegador. Sin embargo, se recomienda cerrar sesión correctamente.
+P4: ¿Puedo tener varias sesiones abiertas al mismo tiempo?
+R: No, el sistema solo permite una sesión activa por navegador.
+P5: ¿Cómo cambio mi contraseña?
+R: Actualmente, solo el Director puede cambiar contraseñas desde el módulo correspondiente.
+P6: ¿Qué hago si el sistema no carga?
+R:
+1.	Verifica tu conexión a internet
+2.	Limpia la caché del navegador (Ctrl + Shift + Delete)
+3.	Prueba con otro navegador
+4.	Contacta al administrador
+P7: ¿Puedo imprimir mis notas?
+R: Sí, puedes usar la función de impresión del navegador (Ctrl + P) en la sección de notas.
+P8: ¿Cómo veo los comunicados antiguos?
+R: Los comunicados se muestran ordenados del más reciente al más antiguo en la sección correspondiente.
+________________________________________
+10. 🔧 SOLUCIÓN DE PROBLEMAS
+Problema 1: No puedo iniciar sesión
+Posibles causas:
+•	❌ Correo incorrecto
+•	❌ Contraseña incorrecta
+•	❌ Tipo de usuario mal seleccionado
+Solución:
+1.	Verifica que seleccionaste el Tipo de Usuario correcto
+2.	Revisa que el correo esté bien escrito
+3.	Verifica la contraseña (respeta mayúsculas/minúsculas)
+4.	Usa los usuarios de prueba de la tabla en la sección 3.3
+Problema 2: El sistema se ve desordenado
+Posibles causas:
+•	❌ Navegador desactualizado
+•	❌ Caché corrupta
+Solución:
+1.	Actualiza tu navegador
+2.	Limpia la caché: Ctrl + Shift + Delete
+3.	Prueba en modo incógnito: Ctrl + Shift + N
+Problema 3: No se guardan los cambios
+Posibles causas:
+•	❌ Faltan campos obligatorios
+•	❌ Datos inválidos
+Solución:
+1.	Verifica que todos los campos obligatorios estén completos
+2.	Revisa que los datos tengan el formato correcto (DNI de 8 dígitos, email válido, etc.)
+3.	Revisa el mensaje de error que aparece
+Problema 4: La sesión se cierra sola
+Posibles causas:
+•	❌ Inactividad prolongada
+•	❌ Otro usuario inició sesión
+Solución:
+1.	Vuelve a iniciar sesión
+2.	Asegúrate de que nadie más use tus credenciales
+Problema 5: Los datos desaparecieron
+Posibles causas:
+•	❌ Se limpió el localStorage del navegador
+Solución:
+1.	Los datos se restaurarán a los valores por defecto
+2.	Contacta al administrador para recuperar información crítica
+________________________________________
+11. 📚 GLOSARIO
+Término	Definición
+Apoderado	Padre, madre o tutor responsable del estudiante
+Backup	Copia de seguridad de los datos del sistema
+CRUD	Operaciones básicas: Crear, Leer, Actualizar, Eliminar
+Dashboard	Panel principal con estadísticas e información
+DNI	Documento Nacional de Identidad (8 dígitos en Perú)
+Encriptación	Proceso de codificar datos para protegerlos
+Login	Inicio de sesión en el sistema
+Logout	Cierre de sesión en el sistema
+Matriz de Riesgos	Herramienta para identificar y clasificar riesgos
+Modal	Ventana emergente para formularios
+Promedio	Suma de notas dividida entre la cantidad de evaluaciones
+Responsive	Diseño adaptable a diferentes tamaños de pantalla
+Rollback	Restaurar el sistema a una versión anterior
+Sección	División de un grado (A, B, C)
+Toast	Notificación emergente con mensajes al usuario
+________________________________________
+12. 📞 SOPORTE TÉCNICO
+Contacto
+•	🏫 Institución: I.E. Augusto B. Leguía
+•	📍 Ubicación: Mochumí, Lambayeque, Perú
+•	📧 Email: soporte@ieleguia.edu.pe
+•	🌐 Web: www.ieleguia.edu.pe
+Horario de Atención
+•	Lunes a Viernes: 8:00 AM - 4:00 PM
+•	Sábados: 8:00 AM - 12:00 PM
+________________________________________
+13. 📝 NOTAS IMPORTANTES
+⚠️ Recomendaciones de Seguridad
+1.	🔐 No compartas tu contraseña con nadie
+2.	🚪 Cierra sesión al terminar de usar el sistema
+3.	🌐 No uses el sistema en computadoras públicas
+4.	🔄 Cambia tu contraseña periódicamente
+5.	📧 Usa un correo válido para recuperaciones
+💡 Consejos de Uso
+1.	✅ Revisa los comunicados regularmente
+2.	✅ Consulta tus notas al finalizar cada periodo
+3.	✅ Verifica tu asistencia semanalmente
+4.	✅ Mantén actualizada tu información personal
+5.	✅ Reporta cualquier problema al administrador
+________________________________________
+<div align="center"> 
+🎓 FIN DEL MANUAL
+Sistema de Gestión Escolar - I.E. Augusto B. Leguía
+Versión 1.0.0 - Julio 2026
+________________________________________
+"Alma Mater del Distrito de Mochumí"
+Hecho con ❤️ para la comunidad educativa
+________________________________________
+⭐ Si este manual te fue útil, compártelo con otros usuarios
+</div> 
+________________________________________
+📎 ANEXOS
+Anexo A: Capturas de Pantalla
+Para agregar capturas reales del sistema:
+1.	Abre el sistema en tu navegador
+2.	Navega a la sección que quieres capturar
+3.	Usa Impr Pant o Windows + Shift + S
+4.	Guarda las imágenes en una carpeta screenshots/
+5.	Inserta las imágenes en este manual
+Anexo B: Atajos de Teclado Útiles
+Atajo	Función
+Ctrl + P	Imprimir página
+Ctrl + F	Buscar en la página
+Ctrl + R	Recargar página
+F5	Recargar página
+F11	Pantalla completa
+Ctrl + Shift + N	Modo incógnito
+Ctrl + Shift + Delete	Limpiar caché
+Anexo C: Estructura de Notas
+El sistema utiliza una escala de 0 a 20:
+Rango	Estado
+0 - 10	🔴 Desaprobado
+11 - 20	🟢 Aprobado
+18 - 20	⭐ Excelente
+14 - 17	✅ Bueno
+11 - 13	✔️ Regular
+________________________________________
+© 2026 I.E. Augusto B. Leguía - Todos los derechos reservados
+Documento generado el 17 de julio de 2026
+
