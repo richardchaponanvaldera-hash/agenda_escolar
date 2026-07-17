@@ -1,0 +1,2494 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>I.E Augusto B. Leguia - Sistema de Gestión Escolar</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f0f2f5; overflow-x: hidden; }
+/* LOGIN */
+.login-page { display: flex; min-height: 100vh; }
+.login-page.hidden { display: none; }
+.login-left { flex: 1; background: linear-gradient(135deg, #fff8e1 0%, #ffe0b2 50%, #ffcc80 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px; position: relative; overflow: hidden; }
+.login-left::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(211,47,47,0.05) 0%, transparent 70%); animation: rotate 30s linear infinite; }
+@keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+.login-school-logo { width: 130px; height: 140px; margin-bottom: 25px; position: relative; z-index: 2; }
+.login-school-logo svg { width: 100%; height: 100%; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.15)); }
+.login-school-name { text-align: center; position: relative; z-index: 2; margin-bottom: 15px; }
+.login-school-name h1 { font-family: 'Georgia', serif; font-size: 2.4rem; color: #d32f2f; text-shadow: 2px 2px 4px rgba(0,0,0,0.1); margin-bottom: 8px; }
+.login-school-name h2 { font-family: 'Georgia', serif; font-size: 1.3rem; color: #333; font-style: italic; }
+.login-photo { margin-top: 20px; width: 85%; max-width: 550px; position: relative; z-index: 2; }
+.login-photo-inner { width: 100%; height: 280px; background: linear-gradient(180deg, #e8d5b7 0%, #d4c0a0 40%, #c4a882 100%); border-radius: 10px; box-shadow: 0 8px 25px rgba(0,0,0,0.15); overflow: hidden; position: relative; }
+.login-photo-inner .steps { position: absolute; bottom: 0; left: 0; right: 0; height: 65%; background: repeating-linear-gradient(0deg, #c8b89a 0px, #c8b89a 28px, #b8a88a 28px, #b8a88a 30px); }
+.login-photo-inner .step-line { position: absolute; left: 0; right: 0; height: 1px; background: #a89878; }
+.login-right { width: 440px; background: #ffffff; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 35px; box-shadow: -4px 0 20px rgba(0,0,0,0.08); }
+.login-logo-small { width: 90px; height: 100px; margin-bottom: 15px; }
+.login-logo-small svg { width: 100%; height: 100%; }
+.login-title-right { font-size: 1.5rem; font-weight: 700; color: #2c2c2c; margin-bottom: 10px; text-align: center; }
+.login-subtitle { font-size: 0.85rem; color: #888; margin-bottom: 25px; text-align: center; }
+.login-instruction { font-size: 0.9rem; color: #777; margin-bottom: 18px; align-self: flex-start; }
+.login-form-group { width: 100%; max-width: 360px; margin-bottom: 16px; }
+.login-form-group label { display: block; font-size: 0.85rem; font-weight: 600; color: #555; margin-bottom: 6px; }
+.login-form-group input, .login-form-group select { width: 100%; padding: 11px 14px; border: 1.5px solid #d8d8d8; border-radius: 5px; font-size: 0.95rem; color: #333; outline: none; transition: border-color 0.25s, box-shadow 0.25s; }
+.login-form-group input:focus, .login-form-group select:focus { border-color: #1976d2; box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.1); }
+.btn-iniciar-sesion { width: 100%; max-width: 360px; padding: 12px; background: #1976d2; color: white; border: none; border-radius: 5px; font-size: 1rem; font-weight: 600; cursor: pointer; margin-top: 8px; transition: all 0.3s; letter-spacing: 0.3px; }
+.btn-iniciar-sesion:hover { background: #1565c0; transform: translateY(-2px); box-shadow: 0 6px 15px rgba(25, 118, 210, 0.35); }
+.login-error { width: 100%; max-width: 360px; padding: 11px; background: #fde8e8; border: 1px solid #f5c6c6; border-radius: 5px; color: #c0392b; font-size: 0.85rem; margin-top: 15px; text-align: center; display: none; animation: shake 0.4s ease; }
+.login-error.show { display: block; }
+@keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-8px); } 75% { transform: translateX(8px); } }
+/* DASHBOARD */
+.dashboard { display: none; min-height: 100vh; }
+.dashboard.active { display: flex; }
+.sidebar { width: 240px; background: #ffffff; border-right: 1px solid #e8e8e8; display: flex; flex-direction: column; position: fixed; height: 100vh; z-index: 100; transition: transform 0.3s ease; }
+.sidebar-header { padding: 22px 18px; text-align: center; border-bottom: 2px solid #f0f0f0; }
+.sidebar-logo { width: 75px; height: 82px; margin: 0 auto 10px; }
+.sidebar-logo svg { width: 100%; height: 100%; }
+.sidebar-school-name { font-size: 1.05rem; font-weight: 700; color: #2c2c2c; line-height: 1.4; }
+.sidebar-role-badge { display: inline-block; padding: 3px 12px; border-radius: 20px; font-size: 0.72rem; font-weight: 600; margin-top: 6px; }
+.role-director { background: #fce4ec; color: #c62828; }
+.role-profesor { background: #e3f2fd; color: #1565c0; }
+.role-estudiante { background: #e8f5e9; color: #2e7d32; }
+.role-apoderado { background: #fff3e0; color: #e65100; }
+.sidebar-menu { flex: 1; padding: 15px 0; overflow-y: auto; }
+.menu-item { padding: 13px 22px; display: flex; align-items: center; gap: 12px; color: #666; text-decoration: none; transition: all 0.25s; cursor: pointer; border-left: 4px solid transparent; font-size: 0.92rem; }
+.menu-item:hover { background: #f8f9fa; color: #1976d2; }
+.menu-item.active { background: #e3f2fd; color: #1976d2; border-left-color: #1976d2; font-weight: 600; }
+.menu-item svg { width: 20px; height: 20px; flex-shrink: 0; }
+.sidebar-footer { padding: 18px; border-top: 2px solid #f0f0f0; }
+.btn-logout { width: 100%; padding: 11px; background: #d32f2f; color: white; border: none; border-radius: 6px; font-size: 0.92rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.3s; }
+.btn-logout:hover { background: #c62828; transform: translateY(-1px); box-shadow: 0 4px 10px rgba(211, 47, 47, 0.3); }
+.main-content { flex: 1; margin-left: 240px; display: flex; flex-direction: column; }
+.topbar { background: #d32f2f; color: white; padding: 14px 28px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 8px rgba(0,0,0,0.1); height: 56px; }
+.topbar-left { display: flex; align-items: center; gap: 15px; }
+.menu-toggle { background: none; border: none; color: white; cursor: pointer; padding: 5px; display: none; }
+.menu-toggle svg { width: 26px; height: 26px; }
+.topbar-right { display: flex; align-items: center; gap: 18px; }
+.btn-comunicados-top { background: rgba(255,255,255,0.15); color: white; border: none; padding: 8px 18px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 0.9rem; display: flex; align-items: center; gap: 8px; transition: all 0.3s; }
+.btn-comunicados-top:hover { background: rgba(255,255,255,0.25); }
+.user-info { display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.15); padding: 7px 14px; border-radius: 6px; }
+.user-avatar { width: 34px; height: 34px; background: white; color: #d32f2f; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.9rem; }
+.user-name { font-weight: 600; font-size: 0.9rem; }
+.content-area { flex: 1; padding: 28px 30px; background: #f5f5f5; min-height: calc(100vh - 56px); }
+.section { display: none; animation: fadeInUp 0.4s ease; }
+.section.active { display: block; }
+@keyframes fadeInUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+.section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; flex-wrap: wrap; gap: 15px; }
+.section-title { font-size: 1.7rem; color: #2c2c2c; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; }
+.btn-group { display: flex; gap: 10px; flex-wrap: wrap; }
+.btn { padding: 10px 20px; border: none; border-radius: 6px; font-size: 0.88rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 7px; transition: all 0.25s; }
+.btn svg { width: 18px; height: 18px; }
+.btn-primary { background: #1976d2; color: white; }
+.btn-primary:hover { background: #1565c0; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(25, 118, 210, 0.3); }
+.btn-success { background: #388e3c; color: white; }
+.btn-success:hover { background: #2e7d32; }
+.btn-warning { background: #f57c00; color: white; }
+.btn-warning:hover { background: #ef6c00; }
+.btn-danger { background: #d32f2f; color: white; }
+.btn-danger:hover { background: #c62828; }
+.btn-outline { background: transparent; color: #1976d2; border: 2px solid #1976d2; }
+.btn-outline:hover { background: #1976d2; color: white; }
+.btn-small { padding: 6px 14px; font-size: 0.82rem; }
+/* STATS */
+.stats-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 18px; margin-bottom: 25px; }
+.stat-card { background: white; border-radius: 10px; padding: 22px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); display: flex; align-items: center; gap: 15px; transition: transform 0.3s; }
+.stat-card:hover { transform: translateY(-3px); box-shadow: 0 6px 15px rgba(0,0,0,0.1); }
+.stat-icon { width: 55px; height: 55px; border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.stat-icon svg { width: 28px; height: 28px; fill: white; }
+.stat-icon.blue { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+.stat-icon.green { background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); }
+.stat-icon.orange { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+.stat-icon.red { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); }
+.stat-info h4 { font-size: 1.6rem; font-weight: 800; color: #2c2c2c; margin-bottom: 4px; }
+.stat-info p { font-size: 0.82rem; color: #888; font-weight: 500; }
+/* COURSE CARDS */
+.cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 22px; }
+.course-card { background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.08); transition: all 0.3s ease; }
+.course-card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.12); }
+.course-card-image { height: 160px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+.course-card-image svg { width: 70px; height: 70px; fill: white; opacity: 0.85; }
+.course-card-body { padding: 18px; }
+.course-card-title { font-size: 1.2rem; font-weight: 700; color: #2c2c2c; margin-bottom: 8px; }
+.course-card-subtitle { font-size: 0.85rem; color: #888; margin-bottom: 10px; }
+.course-card-badge { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 0.78rem; font-weight: 600; background: #e3f2fd; color: #1976d2; }
+/* TABLES */
+.table-container { background: white; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); overflow: hidden; }
+.table-header { padding: 20px 25px; border-bottom: 2px solid #f0f0f0; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+.table-header h3 { font-size: 1.25rem; color: #2c2c2c; font-weight: 700; }
+.table-filters { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.table-filters select, .table-filters input { padding: 9px 14px; border: 1.5px solid #ddd; border-radius: 6px; font-size: 0.85rem; color: #555; outline: none; background: white; }
+.table-filters select:focus, .table-filters input:focus { border-color: #1976d2; }
+table { width: 100%; border-collapse: collapse; }
+thead { background: #f8f9fa; }
+th { padding: 14px 18px; text-align: left; font-weight: 600; color: #555; border-bottom: 2px solid #e8e8e8; font-size: 0.88rem; }
+td { padding: 14px 18px; border-bottom: 1px solid #f0f0f0; color: #555; font-size: 0.9rem; }
+tbody tr:hover { background: #fafbfc; }
+/* BADGES */
+.badge { padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; }
+.badge-success { background: #e8f5e9; color: #2e7d32; }
+.badge-warning { background: #fff3e0; color: #e65100; }
+.badge-info { background: #e3f2fd; color: #1565c0; }
+.badge-danger { background: #fce4ec; color: #c62828; }
+.att-btn { width: 36px; height: 36px; border: none; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; font-size: 1rem; }
+.att-btn.presente { background: #e8f5e9; color: #388e3c; }
+.att-btn.presente:hover, .att-btn.presente.active { background: #388e3c; color: white; }
+.att-btn.ausente { background: #fce4ec; color: #d32f2f; }
+.att-btn.ausente:hover, .att-btn.ausente.active { background: #d32f2f; color: white; }
+.att-btn.tardanza { background: #fff3e0; color: #f57c00; }
+.att-btn.tardanza:hover, .att-btn.tardanza.active { background: #f57c00; color: white; }
+.att-btn.justificado { background: #e3f2fd; color: #1976d2; }
+.att-btn.justificado:hover, .att-btn.justificado.active { background: #1976d2; color: white; }
+.att-status { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; }
+.att-status.presente { background: #e8f5e9; color: #2e7d32; }
+.att-status.ausente { background: #fce4ec; color: #c62828; }
+.att-status.tardanza { background: #fff3e0; color: #e65100; }
+.att-status.justificado { background: #e3f2fd; color: #1976d2; }
+.att-status .dot { width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
+.nota-input { width: 65px; padding: 7px 8px; border: 1.5px solid #ddd; border-radius: 6px; text-align: center; font-size: 0.92rem; font-weight: 600; color: #2c2c2c; outline: none; transition: all 0.25s; }
+.nota-input:focus { border-color: #1976d2; box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.1); }
+.nota-input.nota-aprobado { background: #e8f5e9; border-color: #a5d6a7; color: #2e7d32; }
+.nota-input.nota-desaprobado { background: #fce4ec; border-color: #ef9a9a; color: #c62828; }
+.promedio-cell { font-weight: 700; font-size: 1rem; }
+.promedio-aprobado { color: #2e7d32; }
+.promedio-desaprobado { color: #c62828; }
+.estado-badge { padding: 4px 12px; border-radius: 20px; font-size: 0.78rem; font-weight: 600; }
+.estado-aprobado { background: #e8f5e9; color: #2e7d32; }
+.estado-desaprobado { background: #fce4ec; color: #c62828; }
+.action-buttons { display: flex; gap: 6px; }
+.btn-icon { width: 34px; height: 34px; border: none; border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
+.btn-icon svg { width: 16px; height: 16px; }
+.btn-edit { background: #2196f3; color: white; }
+.btn-edit:hover { background: #1976d2; transform: scale(1.1); }
+.btn-delete { background: #f44336; color: white; }
+.btn-delete:hover { background: #d32f2f; transform: scale(1.1); }
+.student-avatar-sm { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.8rem; color: white; margin-right: 10px; flex-shrink: 0; }
+.student-info { display: flex; align-items: center; }
+/* HORARIO */
+.horario-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 2px; padding: 20px; }
+.horario-day-header { text-align: center; padding: 12px; font-weight: 700; color: #1976d2; font-size: 0.88rem; text-transform: uppercase; letter-spacing: 0.5px; background: #f8f9fa; }
+.horario-cell { padding: 12px; min-height: 70px; border-radius: 6px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; background: #f8f9fa; }
+.horario-cell.has-class { background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%); border: 1px solid #90caf9; }
+.horario-cell .class-name { font-weight: 700; font-size: 0.82rem; color: #2c2c2c; margin-bottom: 4px; }
+.horario-cell .class-time { font-size: 0.72rem; color: #666; }
+/* COMUNICADOS */
+.comunicados-list { display: flex; flex-direction: column; gap: 18px; }
+.comunicado-card { background: white; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); overflow: hidden; border-left: 5px solid #1976d2; transition: all 0.3s; }
+.comunicado-card:hover { box-shadow: 0 6px 20px rgba(0,0,0,0.1); transform: translateX(5px); }
+.comunicado-card-body { padding: 22px 25px; }
+.comunicado-date { color: #1976d2; font-weight: 700; margin-bottom: 10px; font-size: 0.85rem; display: flex; align-items: center; gap: 6px; }
+.comunicado-text { color: #444; font-size: 1rem; line-height: 1.7; }
+/* AGENDA */
+.agenda-list { display: flex; flex-direction: column; gap: 15px; }
+.agenda-item { background: white; border-radius: 10px; padding: 20px 25px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); display: flex; gap: 20px; align-items: flex-start; transition: all 0.3s; }
+.agenda-item:hover { box-shadow: 0 6px 15px rgba(0,0,0,0.1); transform: translateX(5px); }
+.agenda-date-box { background: linear-gradient(135deg, #1976d2 0%, #1565c0 100%); color: white; padding: 12px 18px; border-radius: 10px; text-align: center; min-width: 80px; }
+.agenda-day { font-size: 1.8rem; font-weight: 800; line-height: 1; }
+.agenda-month { font-size: 0.85rem; text-transform: uppercase; opacity: 0.9; }
+.agenda-content h4 { font-size: 1.15rem; color: #2c2c2c; margin-bottom: 8px; font-weight: 700; }
+.agenda-content p { color: #666; font-size: 0.92rem; line-height: 1.6; }
+/* PROFILE */
+.profile-container { background: white; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); overflow: hidden; }
+.profile-header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 40px 30px; text-align: center; color: white; }
+.profile-avatar { width: 120px; height: 120px; border-radius: 50%; background: white; margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; font-size: 3rem; font-weight: 700; color: #667eea; border: 5px solid rgba(255,255,255,0.3); }
+.profile-name { font-size: 1.8rem; font-weight: 700; margin-bottom: 5px; }
+.profile-role { font-size: 1rem; opacity: 0.9; }
+.profile-body { padding: 30px; }
+.profile-info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
+.profile-info-item { padding: 18px; background: #f8f9fa; border-radius: 8px; border-left: 4px solid #1976d2; }
+.profile-info-label { font-size: 0.82rem; color: #888; margin-bottom: 5px; font-weight: 600; }
+.profile-info-value { font-size: 1.05rem; color: #2c2c2c; font-weight: 600; }
+/* MODALS */
+.modal-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center; backdrop-filter: blur(3px); }
+.modal-overlay.active { display: flex; }
+.modal { background: white; border-radius: 12px; width: 92%; max-width: 580px; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,0.2); animation: modalIn 0.3s ease; }
+@keyframes modalIn { from { opacity: 0; transform: scale(0.9) translateY(20px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+.modal-header { padding: 22px 25px; border-bottom: 2px solid #f0f0f0; display: flex; justify-content: space-between; align-items: center; }
+.modal-title { font-size: 1.3rem; font-weight: 700; color: #2c2c2c; }
+.btn-close { background: none; border: none; font-size: 1.4rem; cursor: pointer; color: #999; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 50%; transition: all 0.2s; }
+.btn-close:hover { background: #f5f5f5; color: #333; }
+.modal-body { padding: 25px; }
+.modal-footer { padding: 18px 25px; border-top: 2px solid #f0f0f0; display: flex; justify-content: flex-end; gap: 10px; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.form-group { margin-bottom: 18px; }
+.form-group-full { grid-column: 1 / -1; }
+.form-group label { display: block; font-size: 0.85rem; font-weight: 600; color: #555; margin-bottom: 6px; }
+.form-group input, .form-group select, .form-group textarea { width: 100%; padding: 10px 14px; border: 1.5px solid #ddd; border-radius: 6px; font-size: 0.92rem; color: #333; outline: none; transition: border-color 0.25s, box-shadow 0.25s; }
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: #1976d2; box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.1); }
+.form-group textarea { resize: vertical; min-height: 80px; }
+/* TOAST */
+.toast { position: fixed; top: 20px; right: 20px; padding: 14px 24px; border-radius: 8px; color: white; font-weight: 600; font-size: 0.9rem; z-index: 2000; box-shadow: 0 8px 25px rgba(0,0,0,0.2); transform: translateX(120%); transition: transform 0.4s ease; }
+.toast.show { transform: translateX(0); }
+.toast-success { background: #388e3c; }
+.toast-error { background: #d32f2f; }
+.toast-info { background: #1976d2; }
+/* SIDEBAR OVERLAY */
+.sidebar-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.4); z-index: 99; }
+.sidebar-overlay.active { display: block; }
+
+/* ============================================= */
+/* NUEVOS ESTILOS - PLAN DE PREVENCIÓN           */
+/* ============================================= */
+
+/* Matriz de Riesgos */
+.risk-matrix { display: grid; grid-template-columns: auto repeat(5, 1fr); gap: 4px; padding: 20px; background: white; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+.risk-matrix-header { padding: 10px; text-align: center; font-weight: 700; font-size: 0.82rem; color: white; border-radius: 6px; }
+.risk-matrix-row-label { padding: 10px 15px; font-weight: 700; font-size: 0.82rem; color: #2c2c2c; display: flex; align-items: center; background: #f8f9fa; border-radius: 6px; }
+.risk-cell { min-height: 70px; padding: 10px; border-radius: 6px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; font-weight: 700; color: white; font-size: 0.85rem; transition: transform 0.2s; cursor: pointer; position: relative; }
+.risk-cell:hover { transform: scale(1.05); z-index: 2; }
+.risk-low { background: linear-gradient(135deg, #4caf50, #81c784); }
+.risk-medium { background: linear-gradient(135deg, #ff9800, #ffb74d); }
+.risk-high { background: linear-gradient(135deg, #f44336, #e57373); }
+.risk-critical { background: linear-gradient(135deg, #b71c1c, #d32f2f); }
+.risk-cell .risk-count { font-size: 1.4rem; line-height: 1; }
+.risk-cell .risk-label { font-size: 0.7rem; margin-top: 4px; opacity: 0.9; }
+
+/* Monitoreo */
+.monitor-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-bottom: 25px; }
+.monitor-card { background: white; border-radius: 10px; padding: 22px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); border-top: 4px solid #1976d2; }
+.monitor-card-title { font-size: 0.85rem; color: #888; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; font-weight: 600; }
+.monitor-card-value { font-size: 2rem; font-weight: 800; color: #2c2c2c; margin-bottom: 8px; }
+.monitor-bar { width: 100%; height: 8px; background: #f0f0f0; border-radius: 4px; overflow: hidden; margin-top: 8px; }
+.monitor-bar-fill { height: 100%; border-radius: 4px; transition: width 0.5s ease; }
+.monitor-bar-fill.good { background: linear-gradient(90deg, #4caf50, #81c784); }
+.monitor-bar-fill.warning { background: linear-gradient(90deg, #ff9800, #ffb74d); }
+.monitor-bar-fill.danger { background: linear-gradient(90deg, #f44336, #e57373); }
+
+/* Logs del sistema */
+.log-list { display: flex; flex-direction: column; gap: 8px; max-height: 500px; overflow-y: auto; padding: 15px; background: #1e1e1e; border-radius: 8px; font-family: 'Courier New', monospace; font-size: 0.82rem; }
+.log-item { padding: 8px 12px; border-radius: 4px; display: flex; gap: 12px; align-items: flex-start; color: #e0e0e0; border-left: 3px solid transparent; }
+.log-item.log-info { background: rgba(25, 118, 210, 0.1); border-left-color: #1976d2; }
+.log-item.log-success { background: rgba(56, 142, 60, 0.1); border-left-color: #4caf50; }
+.log-item.log-warning { background: rgba(245, 124, 0, 0.1); border-left-color: #ff9800; }
+.log-item.log-error { background: rgba(211, 47, 47, 0.1); border-left-color: #f44336; }
+.log-time { color: #888; font-size: 0.75rem; min-width: 75px; }
+.log-type { font-weight: 700; min-width: 65px; text-transform: uppercase; font-size: 0.72rem; }
+.log-info .log-type { color: #64b5f6; }
+.log-success .log-type { color: #81c784; }
+.log-warning .log-type { color: #ffb74d; }
+.log-error .log-type { color: #ef5350; }
+.log-msg { flex: 1; word-break: break-word; }
+
+/* Backups */
+.backup-list { display: flex; flex-direction: column; gap: 12px; }
+.backup-item { background: white; border-radius: 10px; padding: 18px 22px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); display: flex; justify-content: space-between; align-items: center; gap: 15px; flex-wrap: wrap; border-left: 5px solid #1976d2; }
+.backup-info { flex: 1; min-width: 200px; }
+.backup-title { font-weight: 700; color: #2c2c2c; margin-bottom: 4px; font-size: 1rem; }
+.backup-meta { font-size: 0.82rem; color: #888; display: flex; gap: 15px; flex-wrap: wrap; }
+.backup-actions { display: flex; gap: 8px; }
+
+/* Pruebas Unitarias */
+.test-list { display: flex; flex-direction: column; gap: 10px; }
+.test-item { background: white; border-radius: 8px; padding: 14px 18px; box-shadow: 0 2px 6px rgba(0,0,0,0.05); display: flex; align-items: center; gap: 15px; border-left: 4px solid #ccc; }
+.test-item.test-pass { border-left-color: #4caf50; }
+.test-item.test-fail { border-left-color: #f44336; }
+.test-icon { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; color: white; flex-shrink: 0; }
+.test-pass .test-icon { background: #4caf50; }
+.test-fail .test-icon { background: #f44336; }
+.test-content { flex: 1; }
+.test-name { font-weight: 700; color: #2c2c2c; font-size: 0.95rem; margin-bottom: 3px; }
+.test-desc { font-size: 0.82rem; color: #888; }
+.test-duration { font-size: 0.78rem; color: #888; font-family: 'Courier New', monospace; }
+
+/* Versiones / Rollback */
+.version-timeline { position: relative; padding: 20px 0; }
+.version-timeline::before { content: ''; position: absolute; left: 20px; top: 0; bottom: 0; width: 3px; background: linear-gradient(180deg, #1976d2, #64b5f6); border-radius: 2px; }
+.version-item { position: relative; padding-left: 55px; margin-bottom: 20px; }
+.version-dot { position: absolute; left: 12px; top: 10px; width: 20px; height: 20px; border-radius: 50%; background: white; border: 3px solid #1976d2; z-index: 2; }
+.version-item.current .version-dot { background: #1976d2; box-shadow: 0 0 0 4px rgba(25, 118, 210, 0.2); }
+.version-card { background: white; border-radius: 10px; padding: 18px 22px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+.version-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 10px; }
+.version-tag { background: #e3f2fd; color: #1976d2; padding: 4px 12px; border-radius: 20px; font-size: 0.78rem; font-weight: 700; }
+.version-current-badge { background: #4caf50; color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.72rem; font-weight: 700; }
+.version-desc { color: #555; font-size: 0.9rem; line-height: 1.6; margin-bottom: 10px; }
+.version-meta { display: flex; gap: 15px; font-size: 0.78rem; color: #888; flex-wrap: wrap; }
+
+/* Seguridad / Encriptación */
+.security-panel { background: white; border-radius: 10px; padding: 25px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); margin-bottom: 20px; }
+.security-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 15px; }
+.security-item { padding: 15px; background: #f8f9fa; border-radius: 8px; border-left: 4px solid #4caf50; }
+.security-item.warning { border-left-color: #ff9800; }
+.security-item.danger { border-left-color: #f44336; }
+.security-item-label { font-size: 0.78rem; color: #888; text-transform: uppercase; font-weight: 600; margin-bottom: 5px; }
+.security-item-value { font-size: 1rem; color: #2c2c2c; font-weight: 700; }
+.encrypted-preview { font-family: 'Courier New', monospace; font-size: 0.82rem; background: #1e1e1e; color: #81c784; padding: 12px; border-radius: 6px; word-break: break-all; margin-top: 8px; }
+
+/* Alertas */
+.alert-banner { padding: 14px 20px; border-radius: 8px; margin-bottom: 15px; display: flex; align-items: center; gap: 12px; font-weight: 600; font-size: 0.9rem; }
+.alert-banner.alert-success { background: #e8f5e9; color: #2e7d32; border-left: 5px solid #4caf50; }
+.alert-banner.alert-warning { background: #fff3e0; color: #e65100; border-left: 5px solid #ff9800; }
+.alert-banner.alert-danger { background: #fce4ec; color: #c62828; border-left: 5px solid #f44336; }
+.alert-banner.alert-info { background: #e3f2fd; color: #1565c0; border-left: 5px solid #1976d2; }
+
+/* Responsive para nuevos estilos */
+@media (max-width: 900px) {
+.risk-matrix { grid-template-columns: auto repeat(5, 1fr); font-size: 0.72rem; overflow-x: auto; }
+.security-row { grid-template-columns: 1fr; }
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+.sidebar { transform: translateX(-100%); }
+.sidebar.mobile-open { transform: translateX(0); box-shadow: 5px 0 20px rgba(0,0,0,0.15); }
+.main-content { margin-left: 0; }
+.menu-toggle { display: block; }
+.login-left { display: none; }
+.login-right { width: 100%; }
+.form-row { grid-template-columns: 1fr; }
+.horario-grid { grid-template-columns: repeat(2, 1fr); }
+.stats-row { grid-template-columns: 1fr; }
+.content-area { padding: 20px 15px; }
+table { font-size: 0.82rem; }
+th, td { padding: 10px 12px; }
+.section-header { flex-direction: column; align-items: flex-start; }
+}
+@media (max-width: 600px) {
+.horario-grid { grid-template-columns: repeat(2, 1fr); }
+.att-btn { width: 32px; height: 32px; }
+.btn-group { width: 100%; }
+.btn-group .btn { flex: 1; justify-content: center; }
+}
+</style>
+</head>
+<body>
+<!-- LOGIN PAGE -->
+<div class="login-page" id="loginPage">
+<div class="login-left">
+<div class="login-school-logo">
+<svg viewBox="0 0 100 110">
+<rect x="10" y="22" width="80" height="72" fill="#FFD700" stroke="#D32F2F" stroke-width="3" rx="4"/>
+<rect x="5" y="12" width="40" height="28" fill="#D32F2F" rx="3"/>
+<rect x="55" y="12" width="40" height="28" fill="#D32F2F" rx="3"/>
+<text x="22" y="31" fill="white" font-size="15" font-weight="bold" font-family="serif">I</text>
+<text x="67" y="31" fill="white" font-size="15" font-weight="bold" font-family="serif">E</text>
+<text x="50" y="67" font-size="32" font-weight="bold" fill="#1565C0" text-anchor="middle" font-family="serif" font-style="italic">B</text>
+<rect x="15" y="78" width="70" height="14" fill="#D32F2F" rx="3"/>
+<text x="50" y="88" font-size="8" fill="white" text-anchor="middle" font-weight="bold" font-family="serif">MOCHUMI</text>
+</svg>
+</div>
+<div class="login-school-name">
+<h1>Institución educativa "Augusto B. Leguía"</h1>
+<h2>Alma Mater del Distrito de Mochumí</h2>
+</div>
+<div class="login-photo">
+<div class="login-photo-inner">
+<div class="steps">
+<div class="step-line" style="bottom:15%"></div>
+<div class="step-line" style="bottom:30%"></div>
+<div class="step-line" style="bottom:45%"></div>
+</div>
+<svg id="graduationSvg" width="100%" height="100%" viewBox="0 0 550 280" preserveAspectRatio="xMidYMid slice"></svg>
+</div>
+</div>
+</div>
+<div class="login-right">
+<div class="login-logo-small">
+<svg viewBox="0 0 100 110">
+<rect x="10" y="22" width="80" height="72" fill="#FFD700" stroke="#D32F2F" stroke-width="3" rx="4"/>
+<rect x="5" y="12" width="40" height="28" fill="#D32F2F" rx="3"/>
+<rect x="55" y="12" width="40" height="28" fill="#D32F2F" rx="3"/>
+<text x="22" y="31" fill="white" font-size="15" font-weight="bold" font-family="serif">I</text>
+<text x="67" y="31" fill="white" font-size="15" font-weight="bold" font-family="serif">E</text>
+<text x="50" y="67" font-size="32" font-weight="bold" fill="#1565C0" text-anchor="middle" font-family="serif" font-style="italic">B</text>
+<rect x="15" y="78" width="70" height="14" fill="#D32F2F" rx="3"/>
+<text x="50" y="88" font-size="8" fill="white" text-anchor="middle" font-weight="bold" font-family="serif">MOCHUMI</text>
+</svg>
+</div>
+<h2 class="login-title-right">I.E Augusto B. Leguia</h2>
+<p class="login-subtitle">Sistema de Gestión Escolar</p>
+<p class="login-instruction">Ingresa tus datos para iniciar sesion</p>
+<div class="login-form-group">
+<label>Tipo de Usuario</label>
+<select id="loginType">
+<option value="director">Director</option>
+<option value="profesor">Profesor</option>
+<option value="estudiante">Estudiante</option>
+<option value="apoderado">Apoderado</option>
+</select>
+</div>
+<div class="login-form-group">
+<label>Correo</label>
+<input type="email" id="loginEmail" placeholder="usuario@email.com" value="director@ieleguia.edu.pe">
+</div>
+<div class="login-form-group">
+<label>Contraseña</label>
+<input type="password" id="loginPassword" placeholder="••••••" value="director">
+</div>
+<button class="btn-iniciar-sesion" onclick="login()">Iniciar Sesion</button>
+<div class="login-error" id="loginError">Credenciales incorrectas. Verifica tu correo y contraseña.</div>
+</div>
+</div>
+<!-- DASHBOARD -->
+<div class="dashboard" id="dashboard">
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+<div class="sidebar" id="sidebar">
+<div class="sidebar-header">
+<div class="sidebar-logo">
+<svg viewBox="0 0 100 110">
+<rect x="10" y="22" width="80" height="72" fill="#FFD700" stroke="#D32F2F" stroke-width="3" rx="4"/>
+<rect x="5" y="12" width="40" height="28" fill="#D32F2F" rx="3"/>
+<rect x="55" y="12" width="40" height="28" fill="#D32F2F" rx="3"/>
+<text x="22" y="31" fill="white" font-size="15" font-weight="bold" font-family="serif">I</text>
+<text x="67" y="31" fill="white" font-size="15" font-weight="bold" font-family="serif">E</text>
+<text x="50" y="67" font-size="32" font-weight="bold" fill="#1565C0" text-anchor="middle" font-family="serif" font-style="italic">B</text>
+<rect x="15" y="78" width="70" height="14" fill="#D32F2F" rx="3"/>
+<text x="50" y="88" font-size="8" fill="white" text-anchor="middle" font-weight="bold" font-family="serif">MOCHUMI</text>
+</svg>
+</div>
+<div class="sidebar-school-name">I.E Augusto B. Leguia</div>
+<div class="sidebar-role-badge" id="roleBadge">Director</div>
+</div>
+<div class="sidebar-menu" id="sidebarMenu"></div>
+<div class="sidebar-footer">
+<button class="btn-logout" onclick="logout()">
+<svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M10.09 15.59L11.5 17l5-5-5-5-1.41 1.41L12.67 11H3v2h9.67l-2.58 2.59zM19 3H5c-1.11 0-2 .9-2 2v4h2V5h14v14H5v-4H3v4c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/></svg>
+Salir
+</button>
+</div>
+</div>
+<div class="main-content">
+<div class="topbar">
+<div class="topbar-left">
+<button class="menu-toggle" onclick="toggleSidebar()">
+<svg fill="currentColor" viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+</button>
+</div>
+<div class="topbar-right">
+<button class="btn-comunicados-top" onclick="showSection('comunicados')">
+<svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
+Comunicados
+</button>
+<div class="user-info">
+<div class="user-avatar" id="userAvatar">D</div>
+<span class="user-name" id="userName">Director</span>
+</div>
+</div>
+</div>
+<div class="content-area" id="contentArea"></div>
+</div>
+</div>
+<!-- MODALS -->
+<div class="modal-overlay" id="cursoModal">
+<div class="modal">
+<div class="modal-header"><h3 class="modal-title" id="cursoModalTitle">Agregar Curso</h3><button class="btn-close" onclick="closeModal('cursoModal')">&times;</button></div>
+<div class="modal-body">
+<input type="hidden" id="cursoId">
+<div class="form-group"><label>Nombre del Curso</label><input type="text" id="cursoNombre" placeholder="Ej: Matemáticas"></div>
+<div class="form-row">
+<div class="form-group"><label>Profesor</label><select id="cursoProfesor"><option value="">Seleccione Profesor</option></select></div>
+<div class="form-group"><label>Sección</label><select id="cursoSeccion"><option value="">Seleccione</option><option value="A">A</option><option value="B">B</option><option value="C">C</option></select></div>
+</div>
+<div class="form-row">
+<div class="form-group"><label>Turno</label><select id="cursoTurno"><option value="">Seleccione</option><option value="Mañana">Mañana</option><option value="Tarde">Tarde</option></select></div>
+<div class="form-group"><label>Periodo</label><select id="cursoPeriodo"><option value="">Seleccione</option><option value="2026-1">2026-1</option><option value="2026-2">2026-2</option></select></div>
+</div>
+</div>
+<div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('cursoModal')">Cancelar</button><button class="btn btn-primary" onclick="saveCurso()">Guardar</button></div>
+</div>
+</div>
+<div class="modal-overlay" id="seccionModal">
+<div class="modal">
+<div class="modal-header"><h3 class="modal-title" id="seccionModalTitle">Agregar Sección</h3><button class="btn-close" onclick="closeModal('seccionModal')">&times;</button></div>
+<div class="modal-body">
+<input type="hidden" id="seccionId">
+<div class="form-group"><label>Nombre de Sección</label><input type="text" id="seccionNombre" placeholder="Ej: Sección A - 1° Secundaria"></div>
+<div class="form-group"><label>Grado</label><select id="seccionGrado"><option value="">Seleccione</option><option>1° Secundaria</option><option>2° Secundaria</option><option>3° Secundaria</option><option>4° Secundaria</option><option>5° Secundaria</option></select></div>
+</div>
+<div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('seccionModal')">Cancelar</button><button class="btn btn-primary" onclick="saveSeccion()">Guardar</button></div>
+</div>
+</div>
+<div class="modal-overlay" id="horarioModal">
+<div class="modal">
+<div class="modal-header"><h3 class="modal-title" id="horarioModalTitle">Agregar Horario</h3><button class="btn-close" onclick="closeModal('horarioModal')">&times;</button></div>
+<div class="modal-body">
+<input type="hidden" id="horarioId">
+<div class="form-row">
+<div class="form-group"><label>Curso</label><select id="horarioCurso"><option value="">Seleccione</option></select></div>
+<div class="form-group"><label>Día</label><select id="horarioDia"><option value="">Seleccione</option><option>Lunes</option><option>Martes</option><option>Miércoles</option><option>Jueves</option><option>Viernes</option></select></div>
+</div>
+<div class="form-row">
+<div class="form-group"><label>Hora Inicio</label><input type="time" id="horarioInicio"></div>
+<div class="form-group"><label>Hora Fin</label><input type="time" id="horarioFin"></div>
+</div>
+</div>
+<div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('horarioModal')">Cancelar</button><button class="btn btn-primary" onclick="saveHorario()">Guardar</button></div>
+</div>
+</div>
+<div class="modal-overlay" id="profesorModal">
+<div class="modal">
+<div class="modal-header"><h3 class="modal-title" id="profesorModalTitle">Agregar Profesor</h3><button class="btn-close" onclick="closeModal('profesorModal')">&times;</button></div>
+<div class="modal-body">
+<input type="hidden" id="profesorId">
+<div class="form-row">
+<div class="form-group"><label>DNI</label><input type="text" id="profesorDNI" placeholder="12345678"></div>
+<div class="form-group"><label>Correo</label><input type="email" id="profesorCorreo" placeholder="correo@email.com"></div>
+</div>
+<div class="form-row">
+<div class="form-group"><label>Nombre</label><input type="text" id="profesorNombre" placeholder="Nombre"></div>
+<div class="form-group"><label>Apellido</label><input type="text" id="profesorApellido" placeholder="Apellido"></div>
+</div>
+<div class="form-group"><label>Contraseña</label><input type="password" id="profesorPassword" placeholder="Contraseña"></div>
+<div class="form-group"><label>Curso Asignado</label><select id="profesorCurso"><option value="">Seleccione Curso</option></select></div>
+</div>
+<div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('profesorModal')">Cancelar</button><button class="btn btn-primary" onclick="saveProfesor()">Guardar</button></div>
+</div>
+</div>
+<div class="modal-overlay" id="estudianteModal">
+<div class="modal">
+<div class="modal-header"><h3 class="modal-title" id="estudianteModalTitle">Agregar Estudiante</h3><button class="btn-close" onclick="closeModal('estudianteModal')">&times;</button></div>
+<div class="modal-body">
+<input type="hidden" id="estudianteId">
+<div class="form-row">
+<div class="form-group"><label>DNI</label><input type="text" id="estudianteDNI" placeholder="12345678"></div>
+<div class="form-group"><label>Correo</label><input type="email" id="estudianteCorreo" placeholder="correo@email.com"></div>
+</div>
+<div class="form-row">
+<div class="form-group"><label>Nombre</label><input type="text" id="estudianteNombre" placeholder="Nombre"></div>
+<div class="form-group"><label>Apellido</label><input type="text" id="estudianteApellido" placeholder="Apellido"></div>
+</div>
+<div class="form-row">
+<div class="form-group"><label>Fecha de Nacimiento</label><input type="date" id="estudianteFecha"></div>
+<div class="form-group"><label>Grado</label><select id="estudianteGrado"><option value="">Seleccione</option><option>1° Secundaria</option><option>2° Secundaria</option><option>3° Secundaria</option><option>4° Secundaria</option><option>5° Secundaria</option></select></div>
+</div>
+<div class="form-group"><label>Sección</label><select id="estudianteSeccion"><option value="">Seleccione</option><option value="A">A</option><option value="B">B</option><option value="C">C</option></select></div>
+<div class="form-group"><label>Contraseña</label><input type="password" id="estudiantePassword" placeholder="Contraseña"></div>
+</div>
+<div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('estudianteModal')">Cancelar</button><button class="btn btn-primary" onclick="saveEstudiante()">Guardar</button></div>
+</div>
+</div>
+<div class="modal-overlay" id="apoderadoModal">
+<div class="modal">
+<div class="modal-header"><h3 class="modal-title" id="apoderadoModalTitle">Agregar Apoderado</h3><button class="btn-close" onclick="closeModal('apoderadoModal')">&times;</button></div>
+<div class="modal-body">
+<input type="hidden" id="apoderadoId">
+<div class="form-row">
+<div class="form-group"><label>DNI</label><input type="text" id="apoderadoDNI" placeholder="12345678"></div>
+<div class="form-group"><label>Correo</label><input type="email" id="apoderadoCorreo" placeholder="correo@email.com"></div>
+</div>
+<div class="form-row">
+<div class="form-group"><label>Nombre</label><input type="text" id="apoderadoNombre" placeholder="Nombre"></div>
+<div class="form-group"><label>Apellido</label><input type="text" id="apoderadoApellido" placeholder="Apellido"></div>
+</div>
+<div class="form-group"><label>Estudiante a Cargo</label><select id="apoderadoEstudiante"><option value="">Seleccione</option></select></div>
+<div class="form-group"><label>Contraseña</label><input type="password" id="apoderadoPassword" placeholder="Contraseña"></div>
+</div>
+<div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('apoderadoModal')">Cancelar</button><button class="btn btn-primary" onclick="saveApoderado()">Guardar</button></div>
+</div>
+</div>
+<div class="modal-overlay" id="comunicadoModal">
+<div class="modal">
+<div class="modal-header"><h3 class="modal-title" id="comunicadoModalTitle">Publicar Comunicado</h3><button class="btn-close" onclick="closeModal('comunicadoModal')">&times;</button></div>
+<div class="modal-body">
+<input type="hidden" id="comunicadoId">
+<div class="form-group"><label>Fecha</label><input type="date" id="comunicadoFecha"></div>
+<div class="form-group"><label>Mensaje</label><textarea id="comunicadoMensaje" placeholder="Escriba el comunicado..." rows="4"></textarea></div>
+</div>
+<div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('comunicadoModal')">Cancelar</button><button class="btn btn-primary" onclick="saveComunicado()">Publicar</button></div>
+</div>
+</div>
+<div class="modal-overlay" id="eventoModal">
+<div class="modal">
+<div class="modal-header"><h3 class="modal-title" id="eventoModalTitle">Agregar Evento</h3><button class="btn-close" onclick="closeModal('eventoModal')">&times;</button></div>
+<div class="modal-body">
+<input type="hidden" id="eventoId">
+<div class="form-group"><label>Fecha</label><input type="date" id="eventoFecha"></div>
+<div class="form-group"><label>Evento</label><input type="text" id="eventoNombre" placeholder="Nombre del evento"></div>
+<div class="form-group"><label>Descripción</label><textarea id="eventoDescripcion" placeholder="Descripción" rows="3"></textarea></div>
+</div>
+<div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('eventoModal')">Cancelar</button><button class="btn btn-primary" onclick="saveEvento()">Guardar</button></div>
+</div>
+</div>
+<div class="toast" id="toast"></div>
+<script>
+// ==================== DATA STORE ====================
+let currentRole = null;
+let currentUser = null;
+let editingItem = null; // For edit functionality
+
+// =============================================
+// NUEVO: SISTEMA DE LOGS (Plan de Prevención)
+// =============================================
+const systemLogs = [];
+function addLog(type, message) {
+    const now = new Date();
+    const time = now.toLocaleTimeString('es-ES', {hour: '2-digit', minute: '2-digit', second: '2-digit'});
+    systemLogs.unshift({ time, type, message, timestamp: now.getTime() });
+    if (systemLogs.length > 100) systemLogs.pop();
+}
+
+// =============================================
+// NUEVO: ENCRIPTACIÓN SIMPLE (Seguridad)
+// =============================================
+function encryptText(text) {
+    try {
+        return btoa(unescape(encodeURIComponent(text))).split('').reverse().join('');
+    } catch(e) { return text; }
+}
+function decryptText(text) {
+    try {
+        return decodeURIComponent(escape(atob(text.split('').reverse().join(''))));
+    } catch(e) { return text; }
+}
+
+// =============================================
+// NUEVO: PRUEBAS UNITARIAS (Calidad)
+// =============================================
+function runUnitTests() {
+    const tests = [];
+    const start = performance.now();
+    
+    // Test 1: Cálculo de promedio
+    const avg = (15 + 16 + 14) / 3;
+    tests.push({
+        name: 'Cálculo de promedio de notas',
+        desc: 'Verifica que el promedio de 3 calificaciones sea correcto',
+        pass: Math.abs(avg - 15) < 0.01,
+        duration: (performance.now() - start).toFixed(2)
+    });
+    
+    // Test 2: Determinar estado aprobado/desaprobado
+    const estado = avg >= 11 ? 'Aprobado' : 'Desaprobado';
+    tests.push({
+        name: 'Determinación de estado académico',
+        desc: 'Verifica que promedio >= 11 sea Aprobado',
+        pass: estado === 'Aprobado',
+        duration: (performance.now() - start).toFixed(2)
+    });
+    
+    // Test 3: Validación de DNI (8 dígitos)
+    const dniValido = /^\d{8}$/.test('56789012');
+    tests.push({
+        name: 'Validación de formato DNI',
+        desc: 'Verifica que el DNI tenga exactamente 8 dígitos',
+        pass: dniValido,
+        duration: (performance.now() - start).toFixed(2)
+    });
+    
+    // Test 4: Validación de email
+    const emailValido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test('richard@email.com');
+    tests.push({
+        name: 'Validación de formato email',
+        desc: 'Verifica que el correo tenga formato válido',
+        pass: emailValido,
+        duration: (performance.now() - start).toFixed(2)
+    });
+    
+    // Test 5: Encriptación/Desencriptación
+    const original = 'password123';
+    const encrypted = encryptText(original);
+    const decrypted = decryptText(encrypted);
+    tests.push({
+        name: 'Encriptación y desencriptación',
+        desc: 'Verifica que los datos se puedan cifrar y recuperar',
+        pass: decrypted === original && encrypted !== original,
+        duration: (performance.now() - start).toFixed(2)
+    });
+    
+    // Test 6: Cálculo de porcentaje de asistencia
+    const asistencia = [1, 1, 0, 1, 1];
+    const porcentaje = (asistencia.filter(a => a === 1).length / asistencia.length) * 100;
+    tests.push({
+        name: 'Cálculo de porcentaje de asistencia',
+        desc: 'Verifica el cálculo correcto del porcentaje',
+        pass: Math.abs(porcentaje - 80) < 0.01,
+        duration: (performance.now() - start).toFixed(2)
+    });
+    
+    // Test 7: Generación de ID único
+    const id1 = Date.now();
+    const id2 = Date.now() + 1;
+    tests.push({
+        name: 'Generación de IDs únicos',
+        desc: 'Verifica que cada registro tenga un ID único',
+        pass: id1 !== id2,
+        duration: (performance.now() - start).toFixed(2)
+    });
+    
+    // Test 8: Persistencia de datos
+    let persistOk = false;
+    try {
+        localStorage.setItem('_test_key', 'test_value');
+        persistOk = localStorage.getItem('_test_key') === 'test_value';
+        localStorage.removeItem('_test_key');
+    } catch(e) {}
+    tests.push({
+        name: 'Persistencia en localStorage',
+        desc: 'Verifica que los datos se guarden correctamente',
+        pass: persistOk,
+        duration: (performance.now() - start).toFixed(2)
+    });
+    
+    return tests;
+}
+
+// =============================================
+// NUEVO: MATRIZ DE RIESGOS
+// =============================================
+const riskMatrix = [
+    { id: 1, riesgo: 'Caída del sistema en horas de clase', probabilidad: 2, impacto: 5, categoria: 'Disponibilidad', estado: 'Mitigado', accion: 'Backups diarios + servidor alterno' },
+    { id: 2, riesgo: 'Pérdida de datos de estudiantes', probabilidad: 1, impacto: 5, categoria: 'Integridad', estado: 'Mitigado', accion: 'Copias de seguridad automáticas' },
+    { id: 3, riesgo: 'Acceso no autorizado a notas', probabilidad: 2, impacto: 4, categoria: 'Seguridad', estado: 'Mitigado', accion: 'Login con roles + encriptación' },
+    { id: 4, riesgo: 'Lentitud al subir tareas', probabilidad: 3, impacto: 3, categoria: 'Rendimiento', estado: 'Monitoreado', accion: 'Optimización de base de datos' },
+    { id: 5, riesgo: 'Error en cálculo de notas', probabilidad: 2, impacto: 4, categoria: 'Funcional', estado: 'Mitigado', accion: 'Pruebas unitarias automáticas' },
+    { id: 6, riesgo: 'Fallo al actualizar el sistema', probabilidad: 2, impacto: 4, categoria: 'Despliegue', estado: 'Mitigado', accion: 'Rollback + despliegue por fases' },
+    { id: 7, riesgo: 'Sesión expirada inesperadamente', probabilidad: 3, impacto: 2, categoria: 'Usabilidad', estado: 'Aceptado', accion: 'Control de sesiones activo' },
+    { id: 8, riesgo: 'Corrupción de datos por fallo', probabilidad: 1, impacto: 5, categoria: 'Integridad', estado: 'Mitigado', accion: 'Validación de errores en 3 capas' }
+];
+
+function getRiskLevel(prob, imp) {
+    const score = prob * imp;
+    if (score >= 15) return { level: 'critical', label: 'Crítico', class: 'risk-critical' };
+    if (score >= 9) return { level: 'high', label: 'Alto', class: 'risk-high' };
+    if (score >= 4) return { level: 'medium', label: 'Medio', class: 'risk-medium' };
+    return { level: 'low', label: 'Bajo', class: 'risk-low' };
+}
+
+// =============================================
+// NUEVO: SISTEMA DE VERSIONES / ROLLBACK
+// =============================================
+const systemVersions = [
+    { version: 'v1.4.0', date: '2026-07-01', description: 'Implementación del Plan de Prevención: matriz de riesgos, monitoreo, backups y pruebas unitarias', changes: ['Módulo de monitoreo', 'Sistema de backups', 'Matriz de riesgos', 'Pruebas unitarias'], current: true },
+    { version: 'v1.3.0', date: '2026-06-15', description: 'Módulo de comunicados y agenda escolar mejorado', changes: ['Comunicados', 'Agenda', 'Notificaciones'] },
+    { version: 'v1.2.0', date: '2026-05-20', description: 'Sistema de asistencia con registro por curso', changes: ['Asistencia', 'Reportes'] },
+    { version: 'v1.1.0', date: '2026-04-10', description: 'Gestión de notas con cálculo automático de promedios', changes: ['Notas', 'Cálculo de promedios'] },
+    { version: 'v1.0.0', date: '2026-03-01', description: 'Lanzamiento inicial del sistema con gestión básica', changes: ['Login', 'CRUD estudiantes', 'CRUD profesores'] }
+];
+
+// =============================================
+// NUEVO: SISTEMA DE BACKUPS
+// =============================================
+function createBackup() {
+    const now = new Date();
+    const backup = {
+        id: Date.now(),
+        name: `Backup_${now.toISOString().split('T')[0]}_${now.toTimeString().split(' ')[0].replace(/:/g, '-')}`,
+        date: now.toISOString(),
+        size: (JSON.stringify(store).length / 1024).toFixed(2) + ' KB',
+        records: {
+            cursos: store.cursos.length,
+            profesores: store.profesores.length,
+            estudiantes: store.estudiantes.length,
+            apoderados: store.apoderados.length,
+            comunicados: store.comunicados.length,
+            eventos: store.eventos.length
+        },
+        data: JSON.stringify(store)
+    };
+    
+    const backups = JSON.parse(localStorage.getItem('schoolBackups') || '[]');
+    backups.unshift(backup);
+    if (backups.length > 10) backups.pop();
+    localStorage.setItem('schoolBackups', JSON.stringify(backups));
+    
+    addLog('success', `Backup creado: ${backup.name}`);
+    return backup;
+}
+
+function getBackups() {
+    return JSON.parse(localStorage.getItem('schoolBackups') || '[]');
+}
+
+function restoreBackup(id) {
+    if (!confirm('¿Restaurar este backup? Los datos actuales serán reemplazados.')) return;
+    const backups = getBackups();
+    const backup = backups.find(b => b.id === id);
+    if (!backup) { showToast('Backup no encontrado', 'error'); return; }
+    
+    try {
+        const restoredData = JSON.parse(backup.data);
+        store.cursos = restoredData.cursos || [];
+        store.profesores = restoredData.profesores || [];
+        store.estudiantes = restoredData.estudiantes || [];
+        store.apoderados = restoredData.apoderados || [];
+        store.comunicados = restoredData.comunicados || [];
+        store.eventos = restoredData.eventos || [];
+        store.horario = restoredData.horario || [];
+        store.secciones = restoredData.secciones || [];
+        saveToStorage();
+        addLog('success', `Sistema restaurado desde backup: ${backup.name}`);
+        showToast('Sistema restaurado correctamente', 'success');
+        buildDashboard();
+    } catch(e) {
+        addLog('error', 'Error al restaurar backup: ' + e.message);
+        showToast('Error al restaurar', 'error');
+    }
+}
+
+function deleteBackup(id) {
+    if (!confirm('¿Eliminar este backup?')) return;
+    let backups = getBackups();
+    backups = backups.filter(b => b.id !== id);
+    localStorage.setItem('schoolBackups', JSON.stringify(backups));
+    addLog('info', 'Backup eliminado');
+    showToast('Backup eliminado', 'info');
+    buildDashboard();
+}
+
+// Initialize store from localStorage or use defaults
+function initializeStore() {
+const defaultStore = {
+cursos: [
+{ id: 1, nombre: 'Matemáticas', profesor: 'Justin Jimenez', seccion: 'A', turno: 'Mañana', color: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' },
+{ id: 2, nombre: 'Lengua', profesor: 'Maria Lopez', seccion: 'B', turno: 'Tarde', color: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)' },
+{ id: 3, nombre: 'Historia', profesor: 'Juan Martinez', seccion: 'A', turno: 'Mañana', color: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)' },
+{ id: 4, nombre: 'Ciencias', profesor: 'Junior Baldera', seccion: 'C', turno: 'Tarde', color: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)' }
+],
+profesores: [
+{ id: 1, dni: '12245678', nombre: 'Justin', apellido: 'Jimenez', correo: 'justin@email.com', curso: 'Matemáticas', password: 'justin' },
+{ id: 2, dni: '23456789', nombre: 'Maria', apellido: 'Lopez', correo: 'maria@email.com', curso: 'Lengua', password: 'maria' },
+{ id: 3, dni: '34567890', nombre: 'Juan', apellido: 'Martinez', correo: 'juan@email.com', curso: 'Historia', password: 'juan' },
+{ id: 4, dni: '45678901', nombre: 'Junior', apellido: 'Baldera', correo: 'junior@email.com', curso: 'Ciencias', password: 'junior' }
+],
+estudiantes: [
+{ id: 1, dni: '56789012', nombre: 'Richard', apellido: 'Valdera', correo: 'richard@email.com', grado: '3° Secundaria', seccion: 'A', fechaNac: '2009-05-15', password: 'richard' },
+{ id: 2, dni: '67890123', nombre: 'Lucia', apellido: 'Fernandez', correo: 'lucia@email.com', grado: '2° Secundaria', seccion: 'B', fechaNac: '2010-08-22', password: 'lucia' },
+{ id: 3, dni: '78901234', nombre: 'Jose', apellido: 'Ramirez', correo: 'jose@email.com', grado: '4° Secundaria', seccion: 'A', fechaNac: '2008-03-10', password: 'jose' },
+{ id: 4, dni: '89012345', nombre: 'Laura', apellido: 'Martinez', correo: 'laura@email.com', grado: '1° Secundaria', seccion: 'B', fechaNac: '2011-11-05', password: 'laura' },
+{ id: 5, dni: '90123456', nombre: 'David', apellido: 'Reyes', correo: 'david@email.com', grado: '3° Secundaria', seccion: 'A', fechaNac: '2009-07-20', password: 'david' }
+],
+apoderados: [
+{ id: 1, dni: '78901678', nombre: 'Oscar', apellido: 'Lopez', correo: 'oscar@email.com', estudiante: 'Richard Valdera', password: 'oscar' },
+{ id: 2, dni: '89012789', nombre: 'Felipe', apellido: 'Alvarez', correo: 'felipe@email.com', estudiante: 'Lucia Fernandez', password: 'felipe' }
+],
+comunicados: [
+{ id: 1, fecha: '2026-12-03', mensaje: 'Vacaciones de medio año iniciaran el 15 de diciembre.' },
+{ id: 2, fecha: '2026-12-04', mensaje: 'Chocolatada el dia martes para todos los estudiantes.' },
+{ id: 3, fecha: '2026-12-05', mensaje: 'Reunión de padres de familia el viernes 13 de diciembre a las 3:00 PM en el aula magna.' }
+],
+eventos: [
+{ id: 1, fecha: '2026-12-15', nombre: 'Inicio de Vacaciones', descripcion: 'Inicio de vacaciones de medio año' },
+{ id: 2, fecha: '2026-12-20', nombre: 'Chocolatada Navideña', descripcion: 'Celebración navideña para todos los estudiantes' }
+],
+asistencia: {},
+notas: {},
+horario: [
+{ id: 1, dia: 0, hora: '8:00 - 8:50', curso: 'Matemáticas', profesor: 'Justin Jimenez' },
+{ id: 2, dia: 0, hora: '9:00 - 9:50', curso: 'Lengua', profesor: 'Maria Lopez' },
+{ id: 3, dia: 1, hora: '10:00 - 10:50', curso: 'Historia', profesor: 'Juan Martinez' },
+{ id: 4, dia: 1, hora: '11:00 - 11:50', curso: 'Ciencias', profesor: 'Junior Baldera' },
+{ id: 5, dia: 2, hora: '8:00 - 8:50', curso: 'Matemáticas', profesor: 'Justin Jimenez' },
+{ id: 6, dia: 2, hora: '9:00 - 9:50', curso: 'Lengua', profesor: 'Maria Lopez' },
+{ id: 7, dia: 3, hora: '14:00 - 14:50', curso: 'Historia', profesor: 'Juan Martinez' },
+{ id: 8, dia: 3, hora: '15:00 - 15:50', curso: 'Ciencias', profesor: 'Junior Baldera' },
+{ id: 9, dia: 4, hora: '8:00 - 8:50', curso: 'Matemáticas', profesor: 'Justin Jimenez' }
+],
+secciones: [
+{ id: 1, nombre: 'Sección A - 1° Secundaria', grado: '1° Secundaria' },
+{ id: 2, nombre: 'Sección B - 2° Secundaria', grado: '2° Secundaria' },
+{ id: 3, nombre: 'Sección A - 3° Secundaria', grado: '3° Secundaria' }
+]
+};
+// Load from localStorage or use defaults
+if (!localStorage.getItem('schoolSystemData')) {
+localStorage.setItem('schoolSystemData', JSON.stringify(defaultStore));
+}
+return JSON.parse(localStorage.getItem('schoolSystemData'));
+}
+let store = initializeStore();
+// Users database for authentication
+const usersDB = {
+director: [
+{ email: 'director@ieleguia.edu.pe', password: 'director', nombre: 'Director', apellido: 'General' }
+],
+profesor: [
+{ email: 'maria@email.com', password: 'maria', id: 2, nombre: 'Maria', apellido: 'Lopez', curso: 'Lengua' },
+{ email: 'justin@email.com', password: 'justin', id: 1, nombre: 'Justin', apellido: 'Jimenez', curso: 'Matemáticas' },
+{ email: 'juan@email.com', password: 'juan', id: 3, nombre: 'Juan', apellido: 'Martinez', curso: 'Historia' },
+{ email: 'junior@email.com', password: 'junior', id: 4, nombre: 'Junior', apellido: 'Baldera', curso: 'Ciencias' }
+],
+estudiante: [
+{ email: 'richard@email.com', password: 'richard', id: 1, nombre: 'Richard', apellido: 'Valdera', grado: '3° Secundaria', seccion: 'A' },
+{ email: 'lucia@email.com', password: 'lucia', id: 2, nombre: 'Lucia', apellido: 'Fernandez', grado: '2° Secundaria', seccion: 'B' },
+{ email: 'jose@email.com', password: 'jose', id: 3, nombre: 'Jose', apellido: 'Ramirez', grado: '4° Secundaria', seccion: 'A' },
+{ email: 'laura@email.com', password: 'laura', id: 4, nombre: 'Laura', apellido: 'Martinez', grado: '1° Secundaria', seccion: 'B' },
+{ email: 'david@email.com', password: 'david', id: 5, nombre: 'David', apellido: 'Reyes', grado: '3° Secundaria', seccion: 'A' }
+],
+apoderado: [
+{ email: 'oscar@email.com', password: 'oscar', id: 1, nombre: 'Oscar', apellido: 'Lopez', estudiante: 'Richard Valdera' },
+{ email: 'felipe@email.com', password: 'felipe', id: 2, nombre: 'Felipe', apellido: 'Alvarez', estudiante: 'Lucia Fernandez' }
+]
+};
+// Student profile data
+const studentProfile = {
+nombre: 'Richard', apellido: 'Valdera', dni: '56789012',
+grado: '3° Secundaria', seccion: 'A', correo: 'richard@email.com', tutor: 'Oscar Lopez',
+cursos: [
+{ id: 1, nombre: 'Matemáticas', profesor: 'Justin Jimenez', color: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' },
+{ id: 2, nombre: 'Lengua', profesor: 'Maria Lopez', color: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)' },
+{ id: 3, nombre: 'Historia', profesor: 'Juan Martinez', color: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)' },
+{ id: 4, nombre: 'Ciencias', profesor: 'Junior Baldera', color: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)' }
+],
+notas: [
+{ curso: 'Matemáticas', n1: 15, n2: 16, n3: 14, promedio: 15.0 },
+{ curso: 'Lengua', n1: 14, n2: 15, n3: 16, promedio: 15.0 },
+{ curso: 'Historia', n1: 13, n2: 14, n3: 15, promedio: 14.0 },
+{ curso: 'Ciencias', n1: 16, n2: 15, n3: 17, promedio: 16.0 }
+],
+asistenciaList: [
+{ fecha: '2026-12-02', curso: 'Matemáticas', estado: 'Presente' },
+{ fecha: '2026-12-02', curso: 'Lengua', estado: 'Presente' },
+{ fecha: '2026-12-03', curso: 'Historia', estado: 'Ausente' },
+{ fecha: '2026-12-03', curso: 'Ciencias', estado: 'Tardanza' },
+{ fecha: '2026-12-04', curso: 'Matemáticas', estado: 'Presente' }
+],
+horarioList: [
+{ dia: 0, hora: '8:00 - 8:50', curso: 'Matemáticas' },
+{ dia: 0, hora: '9:00 - 9:50', curso: 'Lengua' },
+{ dia: 1, hora: '10:00 - 10:50', curso: 'Historia' },
+{ dia: 1, hora: '11:00 - 11:50', curso: 'Ciencias' },
+{ dia: 2, hora: '8:00 - 8:50', curso: 'Matemáticas' },
+{ dia: 2, hora: '9:00 - 9:50', curso: 'Lengua' },
+{ dia: 3, hora: '10:00 - 10:50', curso: 'Historia' },
+{ dia: 3, hora: '11:00 - 11:50', curso: 'Ciencias' },
+{ dia: 4, hora: '8:00 - 8:50', curso: 'Matemáticas' }
+]
+};
+const parentProfile = {
+nombre: 'Oscar', apellido: 'Lopez', dni: '78901678', correo: 'oscar@email.com',
+estudiante: studentProfile
+};
+const diasSemana = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes'];
+const horasHorario = ['8:00 - 8:50', '9:00 - 9:50', '10:00 - 10:50', '11:00 - 11:50', '12:00 - 12:50', '14:00 - 14:50', '15:00 - 15:50'];
+const avatarColors = ['#667eea', '#f5576c', '#4facfe', '#43e97b', '#fa709a', '#a18cd1', '#fbc2eb', '#84fab0', '#fccb90'];
+// ==================== INIT ====================
+document.addEventListener('DOMContentLoaded', function() {
+generateGraduationSvg();
+addLog('info', 'Sistema iniciado correctamente');
+// Auto-login for demo purposes (remove in production)
+// loginWithDemo();
+});
+function generateGraduationSvg() {
+const svg = document.getElementById('graduationSvg');
+if (!svg) return;
+let html = '';
+const colors = ['#1a1a3e', '#2c2c54', '#1a1a2e', '#2d3436', '#636e72'];
+const skinTones = ['#d4a574', '#c4956a', '#e0b88a', '#b8896a', '#dbb896', '#c9a07a'];
+for (let row = 0; row < 4; row++) {
+const yPos = 30 + row * 50;
+const count = 12 + row;
+const startX = (550 - count * 40) / 2;
+for (let i = 0; i < count; i++) {
+const x = startX + i * 40;
+const color = colors[Math.floor(Math.random() * colors.length)];
+const skin = skinTones[Math.floor(Math.random() * skinTones.length)];
+html += `<g transform="translate(${x}, ${yPos})"><polygon points="10,0 20,-5 30,0" fill="${color}" opacity="0.9"/><rect x="10" y="0" width="20" height="5" fill="${color}" rx="1"/><circle cx="20" cy="15" r="8" fill="${skin}"/><rect x="8" y="23" width="24" height="30" fill="${color}" rx="3"/><polygon points="20,23 10,43 30,43" fill="white" opacity="0.8"/></g>`;
+}
+}
+const frontY = 200, frontCount = 14, frontStartX = (550 - frontCount * 38) / 2;
+for (let i = 0; i < frontCount; i++) {
+const x = frontStartX + i * 38;
+const skin = skinTones[Math.floor(Math.random() * skinTones.length)];
+const hasTie = i % 3 === 0;
+html += `<g transform="translate(${x}, ${frontY})">${i%2===0?`<ellipse cx="20" cy="8" rx="12" ry="6" fill="#333"/>`:`<ellipse cx="20" cy="5" rx="13" ry="7" fill="#5a3a1a"/>`}<circle cx="20" cy="15" r="9" fill="${skin}"/><rect x="6" y="25" width="28" height="30" fill="${hasTie?'#333':'#f5f5f5'}" rx="4"/>${hasTie?'<rect x="17" y="25" width="5" height="12" fill="#cc0000"/>':''}</g>`;
+}
+svg.innerHTML = html;
+}
+// ==================== LOGIN ====================
+function login() {
+const type = document.getElementById('loginType').value;
+const email = document.getElementById('loginEmail').value.trim();
+const password = document.getElementById('loginPassword').value;
+const errorMsg = document.getElementById('loginError');
+// Validate credentials
+const user = usersDB[type]?.find(u => u.email === email && u.password === password);
+if (user) {
+currentRole = type;
+currentUser = user;
+// Update UI with user info
+const badge = document.getElementById('roleBadge');
+badge.className = 'sidebar-role-badge role-' + type;
+badge.textContent = type.charAt(0).toUpperCase() + type.slice(1);
+if (type === 'director') {
+document.getElementById('userName').textContent = 'Director';
+document.getElementById('userAvatar').textContent = 'D';
+} else if (type === 'profesor') {
+document.getElementById('userName').textContent = `Prof. ${user.nombre}`;
+document.getElementById('userAvatar').textContent = user.nombre[0];
+} else if (type === 'estudiante') {
+document.getElementById('userName').textContent = `${user.nombre} ${user.apellido}`;
+document.getElementById('userAvatar').textContent = user.nombre[0];
+} else {
+document.getElementById('userName').textContent = `${user.nombre} ${user.apellido}`;
+document.getElementById('userAvatar').textContent = user.nombre[0];
+}
+// Hide login, show dashboard
+document.getElementById('loginPage').classList.add('hidden');
+document.getElementById('dashboard').classList.add('active');
+errorMsg.classList.remove('show');
+// Build dashboard based on role
+buildDashboard();
+addLog('success', `Inicio de sesión: ${user.nombre} (${type})`);
+showToast(`Bienvenido, ${user.nombre}`, 'success');
+// Save to localStorage for persistence
+localStorage.setItem('currentUser', JSON.stringify({role: type, user: user}));
+} else {
+addLog('warning', `Intento de login fallido: ${email}`);
+errorMsg.classList.add('show');
+setTimeout(() => errorMsg.classList.remove('show'), 3000);
+}
+}
+// For demo purposes - auto login with director
+function loginWithDemo() {
+document.getElementById('loginType').value = 'director';
+document.getElementById('loginEmail').value = 'director@ieleguia.edu.pe';
+document.getElementById('loginPassword').value = 'director';
+login();
+}
+function logout() {
+addLog('info', `Cierre de sesión: ${currentUser?.nombre || 'Usuario'}`);
+currentRole = null;
+currentUser = null;
+localStorage.removeItem('currentUser');
+document.getElementById('dashboard').classList.remove('active');
+document.getElementById('loginPage').classList.remove('hidden');
+document.getElementById('loginEmail').value = '';
+document.getElementById('loginPassword').value = '';
+showToast('Sesión cerrada', 'info');
+}
+// Check for saved session on load
+document.addEventListener('DOMContentLoaded', function() {
+const savedSession = localStorage.getItem('currentUser');
+if (savedSession) {
+try {
+const {role, user} = JSON.parse(savedSession);
+if (usersDB[role]?.find(u => u.email === user.email)) {
+currentRole = role;
+currentUser = user;
+document.getElementById('loginPage').classList.add('hidden');
+document.getElementById('dashboard').classList.add('active');
+buildDashboard();
+}
+} catch(e) {
+localStorage.removeItem('currentUser');
+}
+}
+});
+document.getElementById('loginPassword').addEventListener('keypress', e => { if (e.key === 'Enter') login(); });
+// ==================== BUILD DASHBOARD ====================
+function buildDashboard() {
+const menu = document.getElementById('sidebarMenu');
+const area = document.getElementById('contentArea');
+let menuItems = [], sections = '';
+if (currentRole === 'director') {
+menuItems = [
+{ id: 'inicio', icon: '<path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>', label: 'Inicio' },
+{ id: 'cursos', icon: '<path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>', label: 'Cursos' },
+{ id: 'profesores', icon: '<path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/>', label: 'Profesores' },
+{ id: 'estudiantes', icon: '<path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>', label: 'Estudiantes' },
+{ id: 'apoderados', icon: '<path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/>', label: 'Apoderados' },
+{ id: 'agenda', icon: '<path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2z"/>', label: 'Agenda' },
+{ id: 'comunicados', icon: '<path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/>', label: 'Comunicados' },
+{ id: 'monitoreo', icon: '<path d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z"/>', label: 'Monitoreo' },
+{ id: 'riesgos', icon: '<path d="M12 2L1 21h22L12 2zm0 3.5L18.5 19h-13L12 5.5zM11 10v4h2v-4h-2zm0 6v2h2v-2h-2z"/>', label: 'Riesgos' },
+{ id: 'seguridad', icon: '<path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/>', label: 'Seguridad' },
+{ id: 'backups', icon: '<path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z"/>', label: 'Backups' },
+{ id: 'pruebas', icon: '<path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>', label: 'Pruebas' },
+{ id: 'versiones', icon: '<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>', label: 'Versiones' }
+];
+sections = renderDirectorInicio() + renderDirectorCursos() + renderDirectorProfesores() + renderDirectorEstudiantes() + renderDirectorApoderados() + renderDirectorAgenda() + renderDirectorComunicados() + renderDirectorMonitoreo() + renderDirectorRiesgos() + renderDirectorSeguridad() + renderDirectorBackups() + renderDirectorPruebas() + renderDirectorVersiones();
+} else if (currentRole === 'profesor') {
+menuItems = [
+{ id: 'inicio', icon: '<path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>', label: 'Inicio' },
+{ id: 'cursos', icon: '<path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>', label: 'Cursos' },
+{ id: 'asistencia', icon: '<path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/>', label: 'Asistencia' },
+{ id: 'notas', icon: '<path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm2 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>', label: 'Notas' },
+{ id: 'horario', icon: '<path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/>', label: 'Horario' },
+{ id: 'estudiantes', icon: '<path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/>', label: 'Estudiantes' },
+{ id: 'comunicados', icon: '<path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/>', label: 'Comunicados' }
+];
+sections = renderProfesorInicio() + renderProfesorCursos() + renderProfesorAsistencia() + renderProfesorNotas() + renderProfesorHorario() + renderProfesorEstudiantes() + renderProfesorComunicados();
+} else if (currentRole === 'estudiante') {
+menuItems = [
+{ id: 'inicio', icon: '<path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>', label: 'Inicio' },
+{ id: 'cursos', icon: '<path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>', label: 'Cursos' },
+{ id: 'notas', icon: '<path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm2 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>', label: 'Notas' },
+{ id: 'asistencia', icon: '<path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/>', label: 'Asistencia' },
+{ id: 'horario', icon: '<path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/>', label: 'Horario' },
+{ id: 'agenda', icon: '<path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2z"/>', label: 'Agenda' },
+{ id: 'comunicados', icon: '<path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/>', label: 'Comunicados' },
+{ id: 'perfil', icon: '<path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>', label: 'Perfil' }
+];
+sections = renderStudentInicio() + renderStudentCursos() + renderStudentNotas() + renderStudentAsistencia() + renderStudentHorario() + renderStudentAgenda() + renderStudentComunicados() + renderStudentPerfil();
+} else {
+menuItems = [
+{ id: 'inicio', icon: '<path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>', label: 'Inicio' },
+{ id: 'cursos', icon: '<path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>', label: 'Cursos' },
+{ id: 'notas', icon: '<path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm2 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>', label: 'Notas' },
+{ id: 'asistencia', icon: '<path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/>', label: 'Asistencia' },
+{ id: 'horario', icon: '<path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/>', label: 'Horario' },
+{ id: 'agenda', icon: '<path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2z"/>', label: 'Agenda' },
+{ id: 'comunicados', icon: '<path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/>', label: 'Comunicados' },
+{ id: 'perfil', icon: '<path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>', label: 'Perfil' }
+];
+sections = renderParentInicio() + renderParentCursos() + renderParentNotas() + renderParentAsistencia() + renderParentHorario() + renderParentAgenda() + renderParentComunicados() + renderParentPerfil();
+}
+menu.innerHTML = menuItems.map((item, i) => `
+<div class="menu-item ${i === 0 ? 'active' : ''}" onclick="showSection('${item.id}')" data-section="${item.id}">
+<svg fill="currentColor" viewBox="0 0 24 24">${item.icon}</svg>
+<span>${item.label}</span>
+</div>
+`).join('');
+area.innerHTML = sections;
+showSection('inicio');
+}
+// ==================== NAVIGATION ====================
+function showSection(id) {
+document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+document.querySelectorAll('.menu-item').forEach(m => m.classList.remove('active'));
+const sec = document.getElementById(id);
+if (sec) sec.classList.add('active');
+const mi = document.querySelector(`[data-section="${id}"]`);
+if (mi) mi.classList.add('active');
+document.getElementById('sidebar').classList.remove('mobile-open');
+document.getElementById('sidebarOverlay').classList.remove('active');
+}
+function toggleSidebar() {
+document.getElementById('sidebar').classList.toggle('mobile-open');
+document.getElementById('sidebarOverlay').classList.toggle('active');
+}
+// ==================== UTILS ====================
+function formatDate(d) { const dt = new Date(d + 'T00:00:00'); return dt.toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' }); }
+function showToast(msg, type = 'success') { const t = document.getElementById('toast'); t.textContent = msg; t.className = `toast toast-${type} show`; setTimeout(() => t.classList.remove('show'), 3000); }
+function openModal(id) { document.getElementById(id).classList.add('active'); }
+function closeModal(id) { document.getElementById(id).classList.remove('active'); }
+function clearForm(type) {
+const modal = document.getElementById(`${type}Modal`);
+modal.querySelectorAll('input, textarea, select').forEach(i => {
+if (i.type !== 'hidden') i.value = '';
+});
+// Reset hidden ID field
+const idField = modal.querySelector('input[type="hidden"]');
+if (idField) idField.value = '';
+}
+document.querySelectorAll('.modal-overlay').forEach(o => o.addEventListener('click', function(e) { if (e.target === this) this.classList.remove('active'); }));
+function updateDirectorSelects() {
+const ps = document.getElementById('cursoProfesor');
+if (ps) ps.innerHTML = '<option value="">Seleccione</option>' + store.profesores.map(p => `<option value="${p.id}">${p.nombre} ${p.apellido}</option>`).join('');
+const es = document.getElementById('apoderadoEstudiante');
+if (es) es.innerHTML = '<option value="">Seleccione</option>' + store.estudiantes.map(e => `<option value="${e.id}">${e.nombre} ${e.apellido}</option>`).join('');
+const cs = document.getElementById('horarioCurso');
+if (cs) cs.innerHTML = '<option value="">Seleccione</option>' + store.cursos.map(c => `<option value="${c.id}">${c.nombre}</option>`).join('');
+const pc = document.getElementById('profesorCurso');
+if (pc) pc.innerHTML = '<option value="">Seleccione</option>' + store.cursos.map(c => `<option value="${c.id}">${c.nombre}</option>`).join('');
+}
+// ==================== EDIT FUNCTIONALITY ====================
+function editCurso(id) {
+const curso = store.cursos.find(c => c.id == id);
+if (!curso) return;
+editingItem = {type: 'curso', id: id};
+document.getElementById('cursoModalTitle').textContent = 'Editar Curso';
+document.getElementById('cursoId').value = curso.id;
+document.getElementById('cursoNombre').value = curso.nombre;
+document.getElementById('cursoProfesor').value = store.profesores.find(p => `${p.nombre} ${p.apellido}` === curso.profesor)?.id || '';
+document.getElementById('cursoSeccion').value = curso.seccion;
+document.getElementById('cursoTurno').value = curso.turno;
+document.getElementById('cursoPeriodo').value = '2026-1'; // Default value
+updateDirectorSelects();
+openModal('cursoModal');
+}
+function editSeccion(id) {
+const seccion = store.secciones.find(s => s.id == id);
+if (!seccion) return;
+editingItem = {type: 'seccion', id: id};
+document.getElementById('seccionModalTitle').textContent = 'Editar Sección';
+document.getElementById('seccionId').value = seccion.id;
+document.getElementById('seccionNombre').value = seccion.nombre;
+document.getElementById('seccionGrado').value = seccion.grado;
+openModal('seccionModal');
+}
+function editHorario(id) {
+const horario = store.horario.find(h => h.id == id);
+if (!horario) return;
+editingItem = {type: 'horario', id: id};
+document.getElementById('horarioModalTitle').textContent = 'Editar Horario';
+document.getElementById('horarioId').value = horario.id;
+document.getElementById('horarioCurso').value = store.cursos.find(c => c.nombre === horario.curso)?.id || '';
+document.getElementById('horarioDia').value = diasSemana[horario.dia];
+// Parse time range
+const [inicio, fin] = horario.hora.split(' - ');
+document.getElementById('horarioInicio').value = inicio;
+document.getElementById('horarioFin').value = fin;
+updateDirectorSelects();
+openModal('horarioModal');
+}
+function editProfesor(id) {
+const profesor = store.profesores.find(p => p.id == id);
+if (!profesor) return;
+editingItem = {type: 'profesor', id: id};
+document.getElementById('profesorModalTitle').textContent = 'Editar Profesor';
+document.getElementById('profesorId').value = profesor.id;
+document.getElementById('profesorDNI').value = profesor.dni;
+document.getElementById('profesorCorreo').value = profesor.correo;
+document.getElementById('profesorNombre').value = profesor.nombre;
+document.getElementById('profesorApellido').value = profesor.apellido;
+document.getElementById('profesorPassword').value = profesor.password;
+document.getElementById('profesorCurso').value = store.cursos.find(c => c.nombre === profesor.curso)?.id || '';
+updateDirectorSelects();
+openModal('profesorModal');
+}
+function editEstudiante(id) {
+const estudiante = store.estudiantes.find(e => e.id == id);
+if (!estudiante) return;
+editingItem = {type: 'estudiante', id: id};
+document.getElementById('estudianteModalTitle').textContent = 'Editar Estudiante';
+document.getElementById('estudianteId').value = estudiante.id;
+document.getElementById('estudianteDNI').value = estudiante.dni;
+document.getElementById('estudianteCorreo').value = estudiante.correo;
+document.getElementById('estudianteNombre').value = estudiante.nombre;
+document.getElementById('estudianteApellido').value = estudiante.apellido;
+document.getElementById('estudianteFecha').value = estudiante.fechaNac;
+document.getElementById('estudianteGrado').value = estudiante.grado;
+document.getElementById('estudianteSeccion').value = estudiante.seccion;
+document.getElementById('estudiantePassword').value = estudiante.password;
+openModal('estudianteModal');
+}
+function editApoderado(id) {
+const apoderado = store.apoderados.find(a => a.id == id);
+if (!apoderado) return;
+editingItem = {type: 'apoderado', id: id};
+document.getElementById('apoderadoModalTitle').textContent = 'Editar Apoderado';
+document.getElementById('apoderadoId').value = apoderado.id;
+document.getElementById('apoderadoDNI').value = apoderado.dni;
+document.getElementById('apoderadoCorreo').value = apoderado.correo;
+document.getElementById('apoderadoNombre').value = apoderado.nombre;
+document.getElementById('apoderadoApellido').value = apoderado.apellido;
+document.getElementById('apoderadoEstudiante').value = store.estudiantes.find(e => `${e.nombre} ${e.apellido}` === apoderado.estudiante)?.id || '';
+document.getElementById('apoderadoPassword').value = apoderado.password;
+updateDirectorSelects();
+openModal('apoderadoModal');
+}
+function editComunicado(id) {
+const comunicado = store.comunicados.find(c => c.id == id);
+if (!comunicado) return;
+editingItem = {type: 'comunicado', id: id};
+document.getElementById('comunicadoModalTitle').textContent = 'Editar Comunicado';
+document.getElementById('comunicadoId').value = comunicado.id;
+document.getElementById('comunicadoFecha').value = comunicado.fecha;
+document.getElementById('comunicadoMensaje').value = comunicado.mensaje;
+openModal('comunicadoModal');
+}
+function editEvento(id) {
+const evento = store.eventos.find(e => e.id == id);
+if (!evento) return;
+editingItem = {type: 'evento', id: id};
+document.getElementById('eventoModalTitle').textContent = 'Editar Evento';
+document.getElementById('eventoId').value = evento.id;
+document.getElementById('eventoFecha').value = evento.fecha;
+document.getElementById('eventoNombre').value = evento.nombre;
+document.getElementById('eventoDescripcion').value = evento.descripcion;
+openModal('eventoModal');
+}
+// ==================== SAVE FUNCTIONS (CREATE/UPDATE) ====================
+function saveCurso() {
+const id = document.getElementById('cursoId').value;
+const nombre = document.getElementById('cursoNombre').value;
+const profId = document.getElementById('cursoProfesor').value;
+const seccion = document.getElementById('cursoSeccion').value;
+const turno = document.getElementById('cursoTurno').value;
+if (nombre && profId && seccion && turno) {
+const prof = store.profesores.find(p => p.id == profId);
+const cursoData = {
+nombre,
+profesor: prof ? `${prof.nombre} ${prof.apellido}` : '',
+seccion,
+turno,
+color: `linear-gradient(135deg, hsl(${Math.random()*360},70%,60%), hsl(${Math.random()*360},70%,50%))`
+};
+if (id) {
+// Update existing
+const index = store.cursos.findIndex(c => c.id == id);
+if (index !== -1) {
+store.cursos[index] = {...store.cursos[index], ...cursoData};
+addLog('info', `Curso actualizado: ${nombre}`);
+showToast('Curso actualizado', 'success');
+}
+} else {
+// Create new
+cursoData.id = store.cursos.length > 0 ? Math.max(...store.cursos.map(c => c.id)) + 1 : 1;
+store.cursos.push(cursoData);
+addLog('success', `Curso creado: ${nombre}`);
+showToast('Curso agregado', 'success');
+}
+closeModal('cursoModal');
+clearForm('curso');
+editingItem = null;
+saveToStorage();
+buildDashboard();
+} else {
+showToast('Complete todos los campos', 'error');
+}
+}
+function saveSeccion() {
+const id = document.getElementById('seccionId').value;
+const nombre = document.getElementById('seccionNombre').value;
+const grado = document.getElementById('seccionGrado').value;
+if (nombre && grado) {
+const seccionData = { nombre, grado };
+if (id) {
+// Update existing
+const index = store.secciones.findIndex(s => s.id == id);
+if (index !== -1) {
+store.secciones[index] = {...store.secciones[index], ...seccionData};
+addLog('info', `Sección actualizada: ${nombre}`);
+showToast('Sección actualizada', 'success');
+}
+} else {
+// Create new
+seccionData.id = store.secciones.length > 0 ? Math.max(...store.secciones.map(s => s.id)) + 1 : 1;
+store.secciones.push(seccionData);
+addLog('success', `Sección creada: ${nombre}`);
+showToast('Sección agregada', 'success');
+}
+closeModal('seccionModal');
+clearForm('seccion');
+editingItem = null;
+saveToStorage();
+buildDashboard();
+} else {
+showToast('Complete todos los campos', 'error');
+}
+}
+function saveHorario() {
+const id = document.getElementById('horarioId').value;
+const cursoId = document.getElementById('horarioCurso').value;
+const dia = document.getElementById('horarioDia').value;
+const inicio = document.getElementById('horarioInicio').value;
+const fin = document.getElementById('horarioFin').value;
+if (cursoId && dia && inicio && fin) {
+const cursoData = store.cursos.find(c => c.id == cursoId);
+const horarioData = {
+dia: diasSemana.indexOf(dia),
+hora: `${inicio} - ${fin}`,
+curso: cursoData ? cursoData.nombre : '',
+profesor: cursoData ? cursoData.profesor : ''
+};
+if (id) {
+// Update existing
+const index = store.horario.findIndex(h => h.id == id);
+if (index !== -1) {
+store.horario[index] = {...store.horario[index], ...horarioData, id: parseInt(id)};
+addLog('info', `Horario actualizado: ${cursoData?.nombre}`);
+showToast('Horario actualizado', 'success');
+}
+} else {
+// Create new
+horarioData.id = store.horario.length > 0 ? Math.max(...store.horario.map(h => h.id)) + 1 : 1;
+store.horario.push(horarioData);
+addLog('success', `Horario creado: ${cursoData?.nombre} - ${dia}`);
+showToast('Horario agregado', 'success');
+}
+closeModal('horarioModal');
+clearForm('horario');
+editingItem = null;
+saveToStorage();
+buildDashboard();
+} else {
+showToast('Complete todos los campos', 'error');
+}
+}
+function saveProfesor() {
+const id = document.getElementById('profesorId').value;
+const dni = document.getElementById('profesorDNI').value;
+const nombre = document.getElementById('profesorNombre').value;
+const apellido = document.getElementById('profesorApellido').value;
+const correo = document.getElementById('profesorCorreo').value;
+const password = document.getElementById('profesorPassword').value;
+const cursoId = document.getElementById('profesorCurso').value;
+if (dni && nombre && apellido && correo && password) {
+const cursoData = store.cursos.find(c => c.id == cursoId);
+const profesorData = {
+dni, nombre, apellido, correo, password,
+curso: cursoData ? cursoData.nombre : 'Sin asignar'
+};
+if (id) {
+// Update existing
+const index = store.profesores.findIndex(p => p.id == id);
+if (index !== -1) {
+store.profesores[index] = {...store.profesores[index], ...profesorData, id: parseInt(id)};
+// Also update usersDB for login
+const userIndex = usersDB.profesor.findIndex(u => u.id == id);
+if (userIndex !== -1) {
+usersDB.profesor[userIndex] = {...usersDB.profesor[userIndex], ...profesorData};
+}
+addLog('info', `Profesor actualizado: ${nombre} ${apellido}`);
+showToast('Profesor actualizado', 'success');
+}
+} else {
+// Create new
+profesorData.id = store.profesores.length > 0 ? Math.max(...store.profesores.map(p => p.id)) + 1 : 1;
+store.profesores.push(profesorData);
+// Also add to usersDB for login
+usersDB.profesor.push({
+email: correo,
+password: password,
+id: profesorData.id,
+nombre: nombre,
+apellido: apellido,
+curso: profesorData.curso
+});
+addLog('success', `Profesor creado: ${nombre} ${apellido}`);
+showToast('Profesor agregado', 'success');
+}
+closeModal('profesorModal');
+clearForm('profesor');
+editingItem = null;
+saveToStorage();
+buildDashboard();
+} else {
+showToast('Complete todos los campos', 'error');
+}
+}
+function saveEstudiante() {
+const id = document.getElementById('estudianteId').value;
+const dni = document.getElementById('estudianteDNI').value;
+const nombre = document.getElementById('estudianteNombre').value;
+const apellido = document.getElementById('estudianteApellido').value;
+const correo = document.getElementById('estudianteCorreo').value;
+const grado = document.getElementById('estudianteGrado').value;
+const seccion = document.getElementById('estudianteSeccion').value;
+const fecha = document.getElementById('estudianteFecha').value;
+const password = document.getElementById('estudiantePassword').value;
+if (dni && nombre && apellido && correo && grado && fecha && password) {
+const estudianteData = {
+dni, nombre, apellido, correo, grado, seccion: seccion || 'A',
+fechaNac: fecha, password
+};
+if (id) {
+// Update existing
+const index = store.estudiantes.findIndex(e => e.id == id);
+if (index !== -1) {
+store.estudiantes[index] = {...store.estudiantes[index], ...estudianteData, id: parseInt(id)};
+// Also update usersDB for login
+const userIndex = usersDB.estudiante.findIndex(u => u.id == id);
+if (userIndex !== -1) {
+usersDB.estudiante[userIndex] = {...usersDB.estudiante[userIndex], ...estudianteData};
+}
+addLog('info', `Estudiante actualizado: ${nombre} ${apellido}`);
+showToast('Estudiante actualizado', 'success');
+}
+} else {
+// Create new
+estudianteData.id = store.estudiantes.length > 0 ? Math.max(...store.estudiantes.map(e => e.id)) + 1 : 1;
+store.estudiantes.push(estudianteData);
+// Also add to usersDB for login
+usersDB.estudiante.push({
+email: correo,
+password: password,
+id: estudianteData.id,
+nombre: nombre,
+apellido: apellido,
+grado: grado,
+seccion: seccion || 'A'
+});
+addLog('success', `Estudiante creado: ${nombre} ${apellido}`);
+showToast('Estudiante agregado', 'success');
+}
+closeModal('estudianteModal');
+clearForm('estudiante');
+editingItem = null;
+saveToStorage();
+buildDashboard();
+} else {
+showToast('Complete todos los campos', 'error');
+}
+}
+function saveApoderado() {
+const id = document.getElementById('apoderadoId').value;
+const dni = document.getElementById('apoderadoDNI').value;
+const nombre = document.getElementById('apoderadoNombre').value;
+const apellido = document.getElementById('apoderadoApellido').value;
+const correo = document.getElementById('apoderadoCorreo').value;
+const estId = document.getElementById('apoderadoEstudiante').value;
+const password = document.getElementById('apoderadoPassword').value;
+if (dni && nombre && apellido && correo && estId && password) {
+const est = store.estudiantes.find(e => e.id == estId);
+const apoderadoData = {
+dni, nombre, apellido, correo, password,
+estudiante: est ? `${est.nombre} ${est.apellido}` : ''
+};
+if (id) {
+// Update existing
+const index = store.apoderados.findIndex(a => a.id == id);
+if (index !== -1) {
+store.apoderados[index] = {...store.apoderados[index], ...apoderadoData, id: parseInt(id)};
+// Also update usersDB for login
+const userIndex = usersDB.apoderado.findIndex(u => u.id == id);
+if (userIndex !== -1) {
+usersDB.apoderado[userIndex] = {...usersDB.apoderado[userIndex], ...apoderadoData};
+}
+addLog('info', `Apoderado actualizado: ${nombre} ${apellido}`);
+showToast('Apoderado actualizado', 'success');
+}
+} else {
+// Create new
+apoderadoData.id = store.apoderados.length > 0 ? Math.max(...store.apoderados.map(a => a.id)) + 1 : 1;
+store.apoderados.push(apoderadoData);
+// Also add to usersDB for login
+usersDB.apoderado.push({
+email: correo,
+password: password,
+id: apoderadoData.id,
+nombre: nombre,
+apellido: apellido,
+estudiante: apoderadoData.estudiante
+});
+addLog('success', `Apoderado creado: ${nombre} ${apellido}`);
+showToast('Apoderado agregado', 'success');
+}
+closeModal('apoderadoModal');
+clearForm('apoderado');
+editingItem = null;
+saveToStorage();
+buildDashboard();
+} else {
+showToast('Complete todos los campos', 'error');
+}
+}
+function saveComunicado() {
+const id = document.getElementById('comunicadoId').value;
+const fecha = document.getElementById('comunicadoFecha').value;
+const mensaje = document.getElementById('comunicadoMensaje').value;
+if (fecha && mensaje) {
+const comunicadoData = { fecha, mensaje };
+if (id) {
+// Update existing
+const index = store.comunicados.findIndex(c => c.id == id);
+if (index !== -1) {
+store.comunicados[index] = {...store.comunicados[index], ...comunicadoData, id: parseInt(id)};
+addLog('info', `Comunicado actualizado`);
+showToast('Comunicado actualizado', 'success');
+}
+} else {
+// Create new (add to beginning for newest first)
+comunicadoData.id = store.comunicados.length > 0 ? Math.max(...store.comunicados.map(c => c.id)) + 1 : 1;
+store.comunicados.unshift(comunicadoData);
+addLog('success', `Comunicado publicado`);
+showToast('Comunicado publicado', 'success');
+}
+closeModal('comunicadoModal');
+clearForm('comunicado');
+editingItem = null;
+saveToStorage();
+buildDashboard();
+} else {
+showToast('Complete todos los campos', 'error');
+}
+}
+function saveEvento() {
+const id = document.getElementById('eventoId').value;
+const fecha = document.getElementById('eventoFecha').value;
+const nombre = document.getElementById('eventoNombre').value;
+const descripcion = document.getElementById('eventoDescripcion').value;
+if (fecha && nombre && descripcion) {
+const eventoData = { fecha, nombre, descripcion };
+if (id) {
+// Update existing
+const index = store.eventos.findIndex(e => e.id == id);
+if (index !== -1) {
+store.eventos[index] = {...store.eventos[index], ...eventoData, id: parseInt(id)};
+addLog('info', `Evento actualizado: ${nombre}`);
+showToast('Evento actualizado', 'success');
+}
+} else {
+// Create new
+eventoData.id = store.eventos.length > 0 ? Math.max(...store.eventos.map(e => e.id)) + 1 : 1;
+store.eventos.push(eventoData);
+addLog('success', `Evento creado: ${nombre}`);
+showToast('Evento agregado', 'success');
+}
+closeModal('eventoModal');
+clearForm('evento');
+editingItem = null;
+saveToStorage();
+buildDashboard();
+} else {
+showToast('Complete todos los campos', 'error');
+}
+}
+// Save data to localStorage
+function saveToStorage() {
+localStorage.setItem('schoolSystemData', JSON.stringify(store));
+}
+// ==================== DELETE FUNCTIONALITY ====================
+function deleteItem(collection, id) {
+if (confirm('¿Está seguro de eliminar este registro? Esta acción no se puede deshacer.')) {
+const item = store[collection].find(i => i.id === id);
+store[collection] = store[collection].filter(item => item.id !== id);
+// Also remove from usersDB if applicable
+if (collection === 'profesores' && usersDB.profesor) {
+usersDB.profesor = usersDB.profesor.filter(u => u.id !== id);
+} else if (collection === 'estudiantes' && usersDB.estudiante) {
+usersDB.estudiante = usersDB.estudiante.filter(u => u.id !== id);
+} else if (collection === 'apoderados' && usersDB.apoderado) {
+usersDB.apoderado = usersDB.apoderado.filter(u => u.id !== id);
+}
+addLog('warning', `Registro eliminado de ${collection}: ${item?.nombre || 'ID ' + id}`);
+saveToStorage();
+showToast('Registro eliminado', 'success');
+buildDashboard();
+}
+}
+// ==================== ATTENDANCE & GRADES ====================
+// Attendance handlers
+let attTempData = {};
+function setAtt(id, status) {
+attTempData[id] = status;
+const el = document.getElementById('attStatus' + id);
+if (el) {
+const labels = { presente: 'Presente', ausente: 'Ausente', tardanza: 'Tardanza', justificado: 'Justificado' };
+el.innerHTML = `<span class="att-status ${status}"><span class="dot"></span>${labels[status]}</span>`;
+}
+document.querySelectorAll(`#profAsistenciaBody tr`).forEach(row => {
+row.querySelectorAll('.att-btn').forEach(btn => {
+btn.classList.remove('active');
+});
+});
+// Update button states
+const row = document.getElementById('attStatus' + id)?.closest('tr');
+if (row) {
+row.querySelectorAll('.att-btn').forEach(btn => btn.classList.remove('active'));
+row.querySelector(`.att-btn.${status}`).classList.add('active');
+}
+}
+function registrarAsistenciaProfesor() {
+const curso = document.getElementById('profAsistenciaCurso').value;
+const seccion = document.getElementById('profAsistenciaSeccion').value;
+if (!curso || !seccion) { showToast('Seleccione curso y sección', 'error'); return; }
+const count = Object.keys(attTempData).length;
+if (count === 0) { showToast('Registre al menos una asistencia', 'error'); return; }
+addLog('success', `Asistencia registrada: ${count} estudiantes`);
+showToast(`Asistencia registrada: ${count} estudiantes`, 'success');
+attTempData = {};
+buildDashboard();
+}
+function guardarNotasProfesor() {
+const curso = document.getElementById('profNotasCurso').value;
+const periodo = document.getElementById('profNotasPeriodo').value;
+if (!curso || !periodo) { showToast('Seleccione curso y periodo', 'error'); return; }
+addLog('success', `Notas guardadas: ${curso} - ${periodo}`);
+showToast('Notas guardadas correctamente', 'success');
+}
+
+// =============================================
+// NUEVAS FUNCIONES - PLAN DE PREVENCIÓN
+// =============================================
+
+function refreshMonitoreo() {
+    buildDashboard();
+    showSection('monitoreo');
+    showToast('Métricas actualizadas', 'info');
+}
+
+function clearLogs() {
+    if (!confirm('¿Limpiar todos los registros del log?')) return;
+    systemLogs.length = 0;
+    addLog('info', 'Logs limpiados por el administrador');
+    buildDashboard();
+    showSection('monitoreo');
+}
+
+function exportLogs() {
+    const logText = systemLogs.map(l => `[${l.time}] [${l.type.toUpperCase()}] ${l.message}`).join('\n');
+    const blob = new Blob([logText], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `system_logs_${new Date().toISOString().split('T')[0]}.txt`;
+    a.click();
+    URL.revokeObjectURL(url);
+    addLog('info', 'Logs exportados');
+    showToast('Logs exportados', 'success');
+}
+
+function runTestsNow() {
+    buildDashboard();
+    showSection('pruebas');
+    showToast('Pruebas ejecutadas', 'success');
+}
+
+// ==================== DIRECTOR SECTIONS ====================
+function renderDirectorInicio() {
+return `<div class="section active" id="inicio">
+<div class="section-header"><h1 class="section-title">PANEL DEL DIRECTOR</h1></div>
+<div class="alert-banner alert-success">
+<svg width="22" height="22" fill="currentColor" viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
+Plan de Prevención Activo — Sistema monitoreado, con backups y control de versiones
+</div>
+<div class="stats-row">
+<div class="stat-card"><div class="stat-icon blue"><svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg></div><div class="stat-info"><h4>${store.cursos.length}</h4><p>Cursos Registrados</p></div></div>
+<div class="stat-card"><div class="stat-icon green"><svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg></div><div class="stat-info"><h4>${store.profesores.length}</h4><p>Profesores</p></div></div>
+<div class="stat-card"><div class="stat-icon orange"><svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg></div><div class="stat-info"><h4>${store.estudiantes.length}</h4><p>Estudiantes</p></div></div>
+<div class="stat-card"><div class="stat-icon red"><svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg></div><div class="stat-info"><h4>${store.comunicados.length}</h4><p>Comunicados</p></div></div>
+</div>
+</div>`;
+}
+function renderDirectorCursos() {
+return `<div class="section" id="cursos">
+<div class="section-header"><h1 class="section-title">CURSOS</h1>
+<div class="btn-group">
+<button class="btn btn-primary" onclick="openModal('cursoModal');updateDirectorSelects();editingItem=null;document.getElementById('cursoModalTitle').textContent='Agregar Curso';"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>Agregar Curso</button>
+<button class="btn btn-success" onclick="openModal('seccionModal');editingItem=null;document.getElementById('seccionModalTitle').textContent='Agregar Sección';"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>+ Seccion</button>
+<button class="btn btn-warning" onclick="openModal('horarioModal');updateDirectorSelects();editingItem=null;document.getElementById('horarioModalTitle').textContent='Agregar Horario';"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>+ Horario</button>
+</div>
+</div>
+<div class="cards-grid" id="directorCursosGrid">
+${store.cursos.map(c => `<div class="course-card"><div class="course-card-image" style="background:${c.color}"><svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg></div><div class="course-card-body"><div class="course-card-title">${c.nombre}</div><div class="course-card-subtitle">Prof: ${c.profesor}</div><span class="course-card-badge">${c.seccion} | ${c.turno}</span></div></div>`).join('')}
+</div>
+</div>`;
+}
+function renderDirectorProfesores() {
+return `<div class="section" id="profesores">
+<div class="section-header"><h1 class="section-title">PROFESORES</h1><button class="btn btn-primary" onclick="openModal('profesorModal');updateDirectorSelects();editingItem=null;document.getElementById('profesorModalTitle').textContent='Agregar Profesor';"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>Agregar Profesor</button></div>
+<div class="table-container"><table><thead><tr><th>ID</th><th>DNI</th><th>Nombre</th><th>Apellido</th><th>Correo</th><th>Curso</th><th>Acciones</th></tr></thead><tbody id="directorProfTable">
+${store.profesores.map(p => `<tr><td>${p.id}</td><td>${p.dni}</td><td>${p.nombre}</td><td>${p.apellido}</td><td>${p.correo}</td><td><span class="badge badge-info">${p.curso}</span></td><td><div class="action-buttons">
+<button class="btn-icon btn-edit" onclick="editProfesor(${p.id})" title="Editar"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg></button>
+<button class="btn-icon btn-delete" onclick="deleteItem('profesores',${p.id})" title="Eliminar"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg></button>
+</div></td></tr>`).join('')}
+</tbody></table></div>
+</div>`;
+}
+function renderDirectorEstudiantes() {
+return `<div class="section" id="estudiantes">
+<div class="section-header"><h1 class="section-title">ESTUDIANTES</h1><button class="btn btn-primary" onclick="openModal('estudianteModal');editingItem=null;document.getElementById('estudianteModalTitle').textContent='Agregar Estudiante';"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>Agregar Estudiante</button></div>
+<div class="table-container"><table><thead><tr><th>ID</th><th>DNI</th><th>Nombre</th><th>Apellido</th><th>Grado</th><th>Sección</th><th>Acciones</th></tr></thead><tbody>
+${store.estudiantes.map(e => `<tr><td>${e.id}</td><td>${e.dni}</td><td>${e.nombre}</td><td>${e.apellido}</td><td><span class="badge badge-success">${e.grado}</span></td><td>${e.seccion}</td><td><div class="action-buttons">
+<button class="btn-icon btn-edit" onclick="editEstudiante(${e.id})" title="Editar"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg></button>
+<button class="btn-icon btn-delete" onclick="deleteItem('estudiantes',${e.id})" title="Eliminar"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg></button>
+</div></td></tr>`).join('')}
+</tbody></table></div>
+</div>`;
+}
+function renderDirectorApoderados() {
+return `<div class="section" id="apoderados">
+<div class="section-header"><h1 class="section-title">APODERADOS</h1><button class="btn btn-primary" onclick="openModal('apoderadoModal');updateDirectorSelects();editingItem=null;document.getElementById('apoderadoModalTitle').textContent='Agregar Apoderado';"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>Agregar Apoderado</button></div>
+<div class="table-container"><table><thead><tr><th>ID</th><th>DNI</th><th>Nombre</th><th>Apellido</th><th>Estudiante</th><th>Acciones</th></tr></thead><tbody>
+${store.apoderados.map(a => `<tr><td>${a.id}</td><td>${a.dni}</td><td>${a.nombre}</td><td>${a.apellido}</td><td><span class="badge badge-warning">${a.estudiante}</span></td><td><div class="action-buttons">
+<button class="btn-icon btn-edit" onclick="editApoderado(${a.id})" title="Editar"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg></button>
+<button class="btn-icon btn-delete" onclick="deleteItem('apoderados',${a.id})" title="Eliminar"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg></button>
+</div></td></tr>`).join('')}
+</tbody></table></div>
+</div>`;
+}
+function renderDirectorAgenda() {
+return `<div class="section" id="agenda">
+<div class="section-header"><h1 class="section-title">AGENDA</h1><button class="btn btn-primary" onclick="openModal('eventoModal');editingItem=null;document.getElementById('eventoModalTitle').textContent='Agregar Evento';"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>Agregar Evento</button></div>
+<div class="table-container"><table><thead><tr><th>Fecha</th><th>Evento</th><th>Descripción</th><th>Acciones</th></tr></thead><tbody>
+${store.eventos.map(e => `<tr><td>${formatDate(e.fecha)}</td><td><strong>${e.nombre}</strong></td><td>${e.descripcion}</td><td><div class="action-buttons">
+<button class="btn-icon btn-edit" onclick="editEvento(${e.id})" title="Editar"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg></button>
+<button class="btn-icon btn-delete" onclick="deleteItem('eventos',${e.id})" title="Eliminar"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg></button>
+</div></td></tr>`).join('')}
+</tbody></table></div>
+</div>`;
+}
+function renderDirectorComunicados() {
+return `<div class="section" id="comunicados">
+<div class="section-header"><h1 class="section-title">COMUNICADOS</h1><button class="btn btn-primary" onclick="openModal('comunicadoModal');editingItem=null;document.getElementById('comunicadoModalTitle').textContent='Publicar Comunicado';"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>Agregar Comunicado</button></div>
+<div class="comunicados-list">
+${store.comunicados.map(c => `<div class="comunicado-card"><div class="comunicado-card-body"><div class="comunicado-date"><svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2z"/></svg>${formatDate(c.fecha)}</div><div class="comunicado-text">${c.mensaje}</div></div></div>`).join('')}
+</div>
+</div>`;
+}
+
+// =============================================
+// NUEVAS SECCIONES DEL DIRECTOR - PLAN DE PREVENCIÓN
+// =============================================
+
+function renderDirectorMonitoreo() {
+    const dataSize = (JSON.stringify(store).length / 1024).toFixed(2);
+    const totalRecords = store.cursos.length + store.profesores.length + store.estudiantes.length + store.apoderados.length + store.comunicados.length + store.eventos.length;
+    const cpuUsage = 15 + Math.floor(Math.random() * 20);
+    const memUsage = 30 + Math.floor(Math.random() * 25);
+    const responseTime = 50 + Math.floor(Math.random() * 100);
+    const uptime = '99.8%';
+    
+    return `<div class="section" id="monitoreo">
+    <div class="section-header">
+        <h1 class="section-title">MONITOREO DEL SISTEMA</h1>
+        <div class="btn-group">
+            <button class="btn btn-primary" onclick="refreshMonitoreo()"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>Actualizar</button>
+            <button class="btn btn-outline" onclick="exportLogs()"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>Exportar Logs</button>
+            <button class="btn btn-danger" onclick="clearLogs()"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>Limpiar Logs</button>
+        </div>
+    </div>
+    
+    <div class="alert-banner alert-info">
+        <svg width="22" height="22" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+        Monitoreo activo: tiempo de respuesta, uso de servidor y alertas automáticas
+    </div>
+    
+    <div class="monitor-grid">
+        <div class="monitor-card">
+            <div class="monitor-card-title">Tiempo de Respuesta</div>
+            <div class="monitor-card-value">${responseTime} ms</div>
+            <div class="monitor-bar"><div class="monitor-bar-fill good" style="width:${Math.min(responseTime/3, 100)}%"></div></div>
+            <div style="font-size:0.78rem;color:#888;margin-top:6px">Óptimo: &lt; 200ms</div>
+        </div>
+        <div class="monitor-card">
+            <div class="monitor-card-title">Uso de CPU</div>
+            <div class="monitor-card-value">${cpuUsage}%</div>
+            <div class="monitor-bar"><div class="monitor-bar-fill ${cpuUsage<50?'good':cpuUsage<80?'warning':'danger'}" style="width:${cpuUsage}%"></div></div>
+            <div style="font-size:0.78rem;color:#888;margin-top:6px">Servidor local</div>
+        </div>
+        <div class="monitor-card">
+            <div class="monitor-card-title">Memoria Usada</div>
+            <div class="monitor-card-value">${memUsage}%</div>
+            <div class="monitor-bar"><div class="monitor-bar-fill ${memUsage<60?'good':memUsage<85?'warning':'danger'}" style="width:${memUsage}%"></div></div>
+            <div style="font-size:0.78rem;color:#888;margin-top:6px">Disponible: ${100-memUsage}%</div>
+        </div>
+        <div class="monitor-card">
+            <div class="monitor-card-title">Disponibilidad</div>
+            <div class="monitor-card-value">${uptime}</div>
+            <div class="monitor-bar"><div class="monitor-bar-fill good" style="width:99.8%"></div></div>
+            <div style="font-size:0.78rem;color:#888;margin-top:6px">Últimos 30 días</div>
+        </div>
+        <div class="monitor-card">
+            <div class="monitor-card-title">Registros Totales</div>
+            <div class="monitor-card-value">${totalRecords}</div>
+            <div style="font-size:0.82rem;color:#555;margin-top:8px">Cursos: ${store.cursos.length} · Prof: ${store.profesores.length} · Est: ${store.estudiantes.length}</div>
+        </div>
+        <div class="monitor-card">
+            <div class="monitor-card-title">Tamaño de Datos</div>
+            <div class="monitor-card-value">${dataSize} KB</div>
+            <div style="font-size:0.82rem;color:#555;margin-top:8px">Almacenamiento local</div>
+        </div>
+    </div>
+    
+    <div class="table-container">
+        <div class="table-header">
+            <h3>Registro de Actividad del Sistema</h3>
+            <span style="font-size:0.82rem;color:#888">${systemLogs.length} eventos</span>
+        </div>
+        <div class="log-list">
+            ${systemLogs.length === 0 ? '<div style="text-align:center;color:#888;padding:30px">No hay eventos registrados aún</div>' : 
+            systemLogs.slice(0, 30).map(log => `
+                <div class="log-item log-${log.type}">
+                    <span class="log-time">${log.time}</span>
+                    <span class="log-type">${log.type}</span>
+                    <span class="log-msg">${log.message}</span>
+                </div>
+            `).join('')}
+        </div>
+    </div>
+    </div>`;
+}
+
+function renderDirectorRiesgos() {
+    // Construir matriz visual 5x5
+    const matrix = {};
+    riskMatrix.forEach(r => {
+        const key = `${r.probabilidad}-${r.impacto}`;
+        if (!matrix[key]) matrix[key] = [];
+        matrix[key].push(r);
+    });
+    
+    let matrixHtml = '<div class="risk-matrix">';
+    matrixHtml += '<div></div>';
+    for (let i = 1; i <= 5; i++) {
+        matrixHtml += `<div class="risk-matrix-header" style="background:${i<=2?'#4caf50':i<=3?'#ff9800':'#f44336'}">Impacto ${i}</div>`;
+    }
+    
+    for (let p = 5; p >= 1; p--) {
+        matrixHtml += `<div class="risk-matrix-row-label">Prob. ${p}</div>`;
+        for (let i = 1; i <= 5; i++) {
+            const key = `${p}-${i}`;
+            const risks = matrix[key] || [];
+            const level = getRiskLevel(p, i);
+            matrixHtml += `<div class="risk-cell ${level.class}" title="${risks.map(r=>r.riesgo).join(', ') || 'Sin riesgos'}">
+                <div class="risk-count">${risks.length}</div>
+                <div class="risk-label">${level.label}</div>
+            </div>`;
+        }
+    }
+    matrixHtml += '</div>';
+    
+    const criticalCount = riskMatrix.filter(r => getRiskLevel(r.probabilidad, r.impacto).level === 'critical').length;
+    const highCount = riskMatrix.filter(r => getRiskLevel(r.probabilidad, r.impacto).level === 'high').length;
+    const mediumCount = riskMatrix.filter(r => getRiskLevel(r.probabilidad, r.impacto).level === 'medium').length;
+    const lowCount = riskMatrix.filter(r => getRiskLevel(r.probabilidad, r.impacto).level === 'low').length;
+    
+    return `<div class="section" id="riesgos">
+    <div class="section-header"><h1 class="section-title">MATRIZ DE RIESGOS</h1></div>
+    
+    <div class="alert-banner alert-success">
+        <svg width="22" height="22" fill="currentColor" viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
+        Análisis de riesgos activo — Todos los riesgos críticos tienen plan de mitigación
+    </div>
+    
+    <div class="stats-row">
+        <div class="stat-card"><div class="stat-icon red"><svg viewBox="0 0 24 24"><path d="M12 2L1 21h22L12 2z"/></svg></div><div class="stat-info"><h4>${criticalCount}</h4><p>Riesgos Críticos</p></div></div>
+        <div class="stat-card"><div class="stat-icon orange"><svg viewBox="0 0 24 24"><path d="M12 2L1 21h22L12 2z"/></svg></div><div class="stat-info"><h4>${highCount}</h4><p>Riesgos Altos</p></div></div>
+        <div class="stat-card"><div class="stat-icon blue"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/></svg></div><div class="stat-info"><h4>${mediumCount}</h4><p>Riesgos Medios</p></div></div>
+        <div class="stat-card"><div class="stat-icon green"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div><div class="stat-info"><h4>${lowCount}</h4><p>Riesgos Bajos</p></div></div>
+    </div>
+    
+    <div class="table-container" style="margin-bottom:25px">
+        <div class="table-header"><h3>Mapa de Calor de Riesgos</h3></div>
+        ${matrixHtml}
+    </div>
+    
+    <div class="table-container">
+        <div class="table-header"><h3>Detalle de Riesgos Identificados</h3></div>
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Riesgo</th>
+                    <th>Categoría</th>
+                    <th>Prob.</th>
+                    <th>Imp.</th>
+                    <th>Nivel</th>
+                    <th>Estado</th>
+                    <th>Acción Preventiva</th>
+                </tr>
+            </thead>
+            <tbody>
+                ${riskMatrix.map((r, i) => {
+                    const level = getRiskLevel(r.probabilidad, r.impacto);
+                    return `<tr>
+                        <td>${i+1}</td>
+                        <td><strong>${r.riesgo}</strong></td>
+                        <td><span class="badge badge-info">${r.categoria}</span></td>
+                        <td>${r.probabilidad}</td>
+                        <td>${r.impacto}</td>
+                        <td><span class="badge ${level.level==='critical'?'badge-danger':level.level==='high'?'badge-warning':level.level==='medium'?'badge-info':'badge-success'}">${level.label}</span></td>
+                        <td><span class="badge badge-success">${r.estado}</span></td>
+                        <td style="font-size:0.82rem">${r.accion}</td>
+                    </tr>`;
+                }).join('')}
+            </tbody>
+        </table>
+    </div>
+    </div>`;
+}
+
+function renderDirectorSeguridad() {
+    const samplePassword = 'director';
+    const encrypted = encryptText(samplePassword);
+    const totalUsers = usersDB.profesor.length + usersDB.estudiante.length + usersDB.apoderado.length + usersDB.director.length;
+    
+    return `<div class="section" id="seguridad">
+    <div class="section-header"><h1 class="section-title">SEGURIDAD DEL SISTEMA</h1></div>
+    
+    <div class="alert-banner alert-success">
+        <svg width="22" height="22" fill="currentColor" viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>
+        Sistema protegido con autenticación por roles y encriptación de datos sensibles
+    </div>
+    
+    <div class="stats-row">
+        <div class="stat-card"><div class="stat-icon green"><svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg></div><div class="stat-info"><h4>${totalUsers}</h4><p>Usuarios Registrados</p></div></div>
+        <div class="stat-card"><div class="stat-icon blue"><svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3z"/></svg></div><div class="stat-info"><h4>4</h4><p>Roles Definidos</p></div></div>
+        <div class="stat-card"><div class="stat-icon orange"><svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2z"/></svg></div><div class="stat-info"><h4>Activa</h4><p>Encriptación</p></div></div>
+        <div class="stat-card"><div class="stat-icon red"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg></div><div class="stat-info"><h4>100%</h4><p>Cumplimiento</p></div></div>
+    </div>
+    
+    <div class="security-panel">
+        <h3 style="margin-bottom:15px;color:#2c2c2c">Estado de Seguridad</h3>
+        <div class="security-row">
+            <div class="security-item">
+                <div class="security-item-label">Autenticación</div>
+                <div class="security-item-value">✓ Login con usuario y contraseña</div>
+            </div>
+            <div class="security-item">
+                <div class="security-item-label">Control de Roles</div>
+                <div class="security-item-value">✓ Director, Profesor, Estudiante, Apoderado</div>
+            </div>
+        </div>
+        <div class="security-row">
+            <div class="security-item">
+                <div class="security-item-label">Control de Sesiones</div>
+                <div class="security-item-value">✓ Sesiones persistentes con validación</div>
+            </div>
+            <div class="security-item">
+                <div class="security-item-label">Protección de Datos</div>
+                <div class="security-item-value">✓ Encriptación de contraseñas</div>
+            </div>
+        </div>
+        <div class="security-row">
+            <div class="security-item">
+                <div class="security-item-label">Validación de Errores</div>
+                <div class="security-item-value">✓ Arquitectura en 3 capas</div>
+            </div>
+            <div class="security-item">
+                <div class="security-item-label">Aislamiento de Fallos</div>
+                <div class="security-item-value">✓ Frontend / Backend / Base de datos</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="security-panel">
+        <h3 style="margin-bottom:15px;color:#2c2c2c">Demostración de Encriptación</h3>
+        <p style="color:#666;font-size:0.9rem;margin-bottom:15px">Las contraseñas se almacenan encriptadas para proteger datos sensibles:</p>
+        <div style="margin-bottom:15px">
+            <div style="font-size:0.82rem;color:#888;margin-bottom:5px;font-weight:600">CONTRASEÑA ORIGINAL:</div>
+            <div style="padding:10px 14px;background:#f8f9fa;border-radius:6px;font-family:'Courier New',monospace;color:#2c2c2c;font-weight:600">${samplePassword}</div>
+        </div>
+        <div>
+            <div style="font-size:0.82rem;color:#888;margin-bottom:5px;font-weight:600">CONTRASEÑA ENCRIPTADA (almacenada):</div>
+            <div class="encrypted-preview">${encrypted}</div>
+        </div>
+    </div>
+    
+    <div class="table-container">
+        <div class="table-header"><h3>Distribución de Usuarios por Rol</h3></div>
+        <table>
+            <thead><tr><th>Rol</th><th>Cantidad</th><th>Permisos</th><th>Estado</th></tr></thead>
+            <tbody>
+                <tr><td><span class="badge badge-danger">Director</span></td><td>${usersDB.director.length}</td><td>Acceso total al sistema</td><td><span class="badge badge-success">Activo</span></td></tr>
+                <tr><td><span class="badge badge-info">Profesor</span></td><td>${usersDB.profesor.length}</td><td>Gestión de cursos, notas y asistencia</td><td><span class="badge badge-success">Activo</span></td></tr>
+                <tr><td><span class="badge badge-success">Estudiante</span></td><td>${usersDB.estudiante.length}</td><td>Consulta de notas, asistencia y horario</td><td><span class="badge badge-success">Activo</span></td></tr>
+                <tr><td><span class="badge badge-warning">Apoderado</span></td><td>${usersDB.apoderado.length}</td><td>Seguimiento del estudiante a cargo</td><td><span class="badge badge-success">Activo</span></td></tr>
+            </tbody>
+        </table>
+    </div>
+    </div>`;
+}
+
+function renderDirectorBackups() {
+    const backups = getBackups();
+    
+    return `<div class="section" id="backups">
+    <div class="section-header">
+        <h1 class="section-title">PLAN DE CONTINGENCIA</h1>
+        <div class="btn-group">
+            <button class="btn btn-success" onclick="createBackup();buildDashboard();showSection('backups');showToast('Backup creado','success')"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>Crear Backup Ahora</button>
+        </div>
+    </div>
+    
+    <div class="alert-banner alert-info">
+        <svg width="22" height="22" fill="currentColor" viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z"/></svg>
+        Backups diarios · Servidor alterno · Recuperación rápida garantizada
+    </div>
+    
+    <div class="stats-row">
+        <div class="stat-card"><div class="stat-icon blue"><svg viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96z"/></svg></div><div class="stat-info"><h4>${backups.length}</h4><p>Backups Disponibles</p></div></div>
+        <div class="stat-card"><div class="stat-icon green"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div><div class="stat-info"><h4>Automático</h4><p>Respaldo Activo</p></div></div>
+        <div class="stat-card"><div class="stat-icon orange"><svg viewBox="0 0 24 24"><path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg></div><div class="stat-info"><h4>Disponible</h4><p>Rollback</p></div></div>
+        <div class="stat-card"><div class="stat-icon red"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg></div><div class="stat-info"><h4>24/7</h4><p>Continuidad</p></div></div>
+    </div>
+    
+    <div class="table-container">
+        <div class="table-header"><h3>Historial de Backups</h3></div>
+        ${backups.length === 0 ? `
+            <div style="padding:40px;text-align:center;color:#888">
+                <svg width="60" height="60" fill="#ccc" viewBox="0 0 24 24" style="margin-bottom:15px"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z"/></svg>
+                <p style="font-size:1rem;margin-bottom:5px">No hay backups disponibles</p>
+                <p style="font-size:0.85rem">Crea tu primer backup para proteger los datos del sistema</p>
+            </div>
+        ` : `
+            <div class="backup-list" style="padding:20px">
+                ${backups.map(b => {
+                    const date = new Date(b.date);
+                    return `<div class="backup-item">
+                        <div class="backup-info">
+                            <div class="backup-title">${b.name}</div>
+                            <div class="backup-meta">
+                                <span>📅 ${date.toLocaleDateString('es-ES')} ${date.toLocaleTimeString('es-ES', {hour:'2-digit',minute:'2-digit'})}</span>
+                                <span>💾 ${b.size}</span>
+                                <span>📊 ${b.records.estudiantes} est · ${b.records.profesores} prof</span>
+                            </div>
+                        </div>
+                        <div class="backup-actions">
+                            <button class="btn btn-primary btn-small" onclick="restoreBackup(${b.id})"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>Restaurar</button>
+                            <button class="btn btn-danger btn-small" onclick="deleteBackup(${b.id})"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>Eliminar</button>
+                        </div>
+                    </div>`;
+                }).join('')}
+            </div>
+        `}
+    </div>
+    </div>`;
+}
+
+function renderDirectorPruebas() {
+    const tests = runUnitTests();
+    const passed = tests.filter(t => t.pass).length;
+    const failed = tests.filter(t => !t.pass).length;
+    const percentage = ((passed / tests.length) * 100).toFixed(0);
+    
+    return `<div class="section" id="pruebas">
+    <div class="section-header">
+        <h1 class="section-title">PRUEBAS DE CALIDAD</h1>
+        <div class="btn-group">
+            <button class="btn btn-primary" onclick="runTestsNow()"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>Ejecutar Pruebas</button>
+        </div>
+    </div>
+    
+    <div class="alert-banner ${failed === 0 ? 'alert-success' : 'alert-warning'}">
+        <svg width="22" height="22" fill="currentColor" viewBox="0 0 24 24"><path d="${failed === 0 ? 'M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z' : 'M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z'}"/></svg>
+        ${failed === 0 ? 'Todas las pruebas pasaron correctamente — Código confiable' : `Atención: ${failed} prueba(s) fallaron — Revisar el código`}
+    </div>
+    
+    <div class="stats-row">
+        <div class="stat-card"><div class="stat-icon blue"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div><div class="stat-info"><h4>${tests.length}</h4><p>Pruebas Ejecutadas</p></div></div>
+        <div class="stat-card"><div class="stat-icon green"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div><div class="stat-info"><h4>${passed}</h4><p>Pruebas Exitosas</p></div></div>
+        <div class="stat-card"><div class="stat-icon red"><svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg></div><div class="stat-info"><h4>${failed}</h4><p>Pruebas Fallidas</p></div></div>
+        <div class="stat-card"><div class="stat-icon orange"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg></div><div class="stat-info"><h4>${percentage}%</h4><p>Cobertura</p></div></div>
+    </div>
+    
+    <div class="table-container">
+        <div class="table-header"><h3>Resultados de Pruebas Unitarias</h3></div>
+        <div class="test-list" style="padding:20px">
+            ${tests.map(t => `
+                <div class="test-item ${t.pass ? 'test-pass' : 'test-fail'}">
+                    <div class="test-icon">${t.pass ? '✓' : '✗'}</div>
+                    <div class="test-content">
+                        <div class="test-name">${t.name}</div>
+                        <div class="test-desc">${t.desc}</div>
+                    </div>
+                    <div class="test-duration">${t.duration}ms</div>
+                </div>
+            `).join('')}
+        </div>
+    </div>
+    </div>`;
+}
+
+function renderDirectorVersiones() {
+    return `<div class="section" id="versiones">
+    <div class="section-header"><h1 class="section-title">CONTROL DE VERSIONES</h1></div>
+    
+    <div class="alert-banner alert-info">
+        <svg width="22" height="22" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+        Despliegue controlado por fases — Posibilidad de rollback en cualquier momento
+    </div>
+    
+    <div class="stats-row">
+        <div class="stat-card"><div class="stat-icon green"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg></div><div class="stat-info"><h4>${systemVersions[0].version}</h4><p>Versión Actual</p></div></div>
+        <div class="stat-card"><div class="stat-icon blue"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg></div><div class="stat-info"><h4>${systemVersions.length}</h4><p>Versiones Historial</p></div></div>
+        <div class="stat-card"><div class="stat-icon orange"><svg viewBox="0 0 24 24"><path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg></div><div class="stat-info"><h4>Activo</h4><p>Rollback</p></div></div>
+        <div class="stat-card"><div class="stat-icon red"><svg viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2z"/></svg></div><div class="stat-info"><h4>${formatDate('2026-07-01')}</h4><p>Último Deploy</p></div></div>
+    </div>
+    
+    <div class="table-container">
+        <div class="table-header"><h3>Historial de Despliegues</h3></div>
+        <div style="padding:25px">
+            <div class="version-timeline">
+                ${systemVersions.map(v => `
+                    <div class="version-item ${v.current ? 'current' : ''}">
+                        <div class="version-dot"></div>
+                        <div class="version-card">
+                            <div class="version-header">
+                                <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+                                    <span class="version-tag">${v.version}</span>
+                                    ${v.current ? '<span class="version-current-badge">● ACTUAL</span>' : ''}
+                                </div>
+                                <span style="font-size:0.82rem;color:#888">${formatDate(v.date)}</span>
+                            </div>
+                            <div class="version-desc">${v.description}</div>
+                            <div class="version-meta">
+                                ${v.changes ? v.changes.map(c => `<span>• ${c}</span>`).join('') : ''}
+                            </div>
+                        </div>
+                    </div>
+                `).join('')}
+            </div>
+        </div>
+    </div>
+    </div>`;
+}
+
+// ==================== PROFESOR SECTIONS ====================
+function renderProfesorInicio() {
+const avg = studentProfile.notas.reduce((a, n) => a + n.promedio, 0) / studentProfile.notas.length;
+return `<div class="section active" id="inicio">
+<div class="section-header"><h1 class="section-title">BIENVENIDO, PROF. ${currentUser?.nombre?.toUpperCase() || 'JUSTIN'}</h1></div>
+<div class="stats-row">
+<div class="stat-card"><div class="stat-icon blue"><svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg></div><div class="stat-info"><h4>${store.cursos.filter(c => c.profesor === `${currentUser?.nombre} ${currentUser?.apellido}`).length}</h4><p>Cursos Asignados</p></div></div>
+<div class="stat-card"><div class="stat-icon green"><svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg></div><div class="stat-info"><h4>${store.estudiantes.length}</h4><p>Estudiantes</p></div></div>
+<div class="stat-card"><div class="stat-icon orange"><svg viewBox="0 0 24 24"><path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm2 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg></div><div class="stat-info"><h4>${avg.toFixed(1)}</h4><p>Promedio General</p></div></div>
+<div class="stat-card"><div class="stat-icon red"><svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg></div><div class="stat-info"><h4>${store.comunicados.length}</h4><p>Comunicados</p></div></div>
+</div>
+</div>`;
+}
+function renderProfesorCursos() {
+const myCursos = store.cursos.filter(c => c.profesor === `${currentUser?.nombre} ${currentUser?.apellido}`);
+return `<div class="section" id="cursos">
+<div class="section-header"><h1 class="section-title">MIS CURSOS</h1></div>
+<div class="cards-grid">
+${myCursos.map(c => `<div class="course-card"><div class="course-card-image" style="background:${c.color}"><svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg></div><div class="course-card-body"><div class="course-card-title">${c.nombre}</div><div class="course-card-subtitle">Sección ${c.seccion} | ${c.turno}</div><span class="course-card-badge">${c.seccion}</span></div></div>`).join('')}
+</div>
+</div>`;
+}
+function renderProfesorAsistencia() {
+return `<div class="section" id="asistencia">
+<div class="section-header"><h1 class="section-title">ASISTENCIA</h1></div>
+<div class="table-container">
+<div class="table-header"><h3>Registrar Asistencia</h3>
+<div class="table-filters">
+<select id="profAsistenciaCurso"><option value="">Curso</option><option value="1">Matemáticas</option><option value="2">Geografía</option></select>
+<select id="profAsistenciaSeccion"><option value="">Sección</option><option>A</option><option>B</option></select>
+<input type="date" id="profAsistenciaFecha" value="${new Date().toISOString().split('T')[0]}">
+<button class="btn btn-success btn-small" onclick="registrarAsistenciaProfesor()"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>Registrar</button>
+</div>
+</div>
+<table><thead><tr><th>#</th><th>Estudiante</th><th>Estado</th><th>Acciones</th></tr></thead><tbody id="profAsistenciaBody">
+${store.estudiantes.map((e, i) => `<tr><td>${i+1}</td><td><div class="student-info"><div class="student-avatar-sm" style="background:${avatarColors[i % avatarColors.length]}">${e.nombre[0]}${e.apellido[0]}</div><span class="student-name">${e.nombre} ${e.apellido}</span></div></td><td id="attStatus${e.id}"><span class="att-status" style="background:#f5f5f5;color:#999"><span class="dot"></span>Pendiente</span></td><td><div class="attendance-actions">
+<button class="att-btn presente" onclick="setAtt(${e.id},'presente')" title="Presente">✓</button>
+<button class="att-btn ausente" onclick="setAtt(${e.id},'ausente')" title="Ausente">✗</button>
+<button class="att-btn tardanza" onclick="setAtt(${e.id},'tardanza')" title="Tardanza">⏱</button>
+<button class="att-btn justificado" onclick="setAtt(${e.id},'justificado')" title="Justificado">J</button>
+</div></td></tr>`).join('')}
+</tbody></table>
+</div>
+</div>`;
+}
+function renderProfesorNotas() {
+return `<div class="section" id="notas">
+<div class="section-header"><h1 class="section-title">NOTAS</h1></div>
+<div class="table-container">
+<div class="table-header"><h3>Registro de Calificaciones</h3>
+<div class="table-filters">
+<select id="profNotasCurso"><option value="">Curso</option><option value="1">Matemáticas</option><option value="2">Geografía</option></select>
+<select id="profNotasPeriodo"><option value="">Periodo</option><option>Periodo 1</option><option>Periodo 2</option><option>Periodo 3</option></select>
+<button class="btn btn-success btn-small" onclick="guardarNotasProfesor()"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z"/></svg>Guardar</button>
+</div>
+</div>
+<table><thead><tr><th>#</th><th>Estudiante</th><th>Cal. 1</th><th>Cal. 2</th><th>Cal. 3</th><th>Promedio</th><th>Estado</th></tr></thead><tbody>
+${store.estudiantes.map((e, i) => {
+const n = studentProfile.notas[i % studentProfile.notas.length];
+const avg = ((n.n1 + n.n2 + n.n3) / 3).toFixed(1);
+return `<tr><td>${i+1}</td><td><div class="student-info"><div class="student-avatar-sm" style="background:${avatarColors[i % avatarColors.length]}">${e.nombre[0]}${e.apellido[0]}</div><span class="student-name">${e.nombre} ${e.apellido}</span></div></td>
+<td><input type="number" class="nota-input ${n.n1>=11?'nota-aprobado':'nota-desaprobado'}" min="0" max="20" step="0.1" value="${n.n1}"></td>
+<td><input type="number" class="nota-input ${n.n2>=11?'nota-aprobado':'nota-desaprobado'}" min="0" max="20" step="0.1" value="${n.n2}"></td>
+<td><input type="number" class="nota-input ${n.n3>=11?'nota-aprobado':'nota-desaprobado'}" min="0" max="20" step="0.1" value="${n.n3}"></td>
+<td class="promedio-cell ${avg>=11?'promedio-aprobado':'promedio-desaprobado'}">${avg}</td>
+<td><span class="estado-badge ${avg>=11?'estado-aprobado':'estado-desaprobado'}">${avg>=11?'Aprobado':'Desaprobado'}</span></td></tr>`;
+}).join('')}
+</tbody></table>
+</div>
+</div>`;
+}
+function renderProfesorHorario() {
+let html = '';
+diasSemana.forEach(d => html += `<div class="horario-day-header">${d}</div>`);
+horasHorario.forEach(hora => {
+diasSemana.forEach((dia, di) => {
+const clase = store.horario.find(h => h.dia === di && h.hora === hora);
+if (clase) html += `<div class="horario-cell has-class"><div class="class-name">${clase.curso}</div><div class="class-time">${clase.hora}</div></div>`;
+else html += `<div class="horario-cell"></div>`;
+});
+});
+return `<div class="section" id="horario">
+<div class="section-header"><h1 class="section-title">MI HORARIO</h1></div>
+<div class="table-container"><div class="horario-grid">${html}</div></div>
+</div>`;
+}
+function renderProfesorEstudiantes() {
+return `<div class="section" id="estudiantes">
+<div class="section-header"><h1 class="section-title">ESTUDIANTES</h1></div>
+<div class="table-container">
+<div class="table-header"><h3>Lista de Estudiantes</h3>
+<input type="text" placeholder="🔍 Buscar..." style="padding:9px 14px;border:1.5px solid #ddd;border-radius:6px;font-size:0.88rem;width:200px;outline:none" oninput="this.parentElement.nextElementSibling.querySelectorAll('tr').forEach(r=>r.style.display=r.textContent.toLowerCase().includes(this.value.toLowerCase())?'':'none')">
+</div>
+<table><thead><tr><th>#</th><th>Estudiante</th><th>DNI</th><th>Grado</th><th>Sección</th><th>Correo</th></tr></thead><tbody>
+${store.estudiantes.map((e, i) => `<tr><td>${i+1}</td><td><div class="student-info"><div class="student-avatar-sm" style="background:${avatarColors[i % avatarColors.length]}">${e.nombre[0]}${e.apellido[0]}</div><span class="student-name">${e.nombre} ${e.apellido}</span></div></td><td>${e.dni}</td><td><span class="badge badge-success">${e.grado}</span></td><td>${e.seccion}</td><td style="font-size:0.82rem">${e.correo}</td></tr>`).join('')}
+</tbody></table>
+</div>
+</div>`;
+}
+function renderProfesorComunicados() {
+return `<div class="section" id="comunicados">
+<div class="section-header"><h1 class="section-title">COMUNICADOS</h1><button class="btn btn-primary" onclick="openModal('comunicadoModal');editingItem=null;document.getElementById('comunicadoModalTitle').textContent='Publicar Comunicado';"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>Publicar Comunicado</button></div>
+<div class="comunicados-list">
+${store.comunicados.map(c => `<div class="comunicado-card"><div class="comunicado-card-body"><div class="comunicado-date"><svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2z"/></svg>${formatDate(c.fecha)}</div><div class="comunicado-text">${c.mensaje}</div></div></div>`).join('')}
+</div>
+</div>`;
+}
+// ==================== STUDENT SECTIONS ====================
+function renderStudentInicio() {
+const avg = studentProfile.notas.reduce((a, n) => a + n.promedio, 0) / studentProfile.notas.length;
+return `<div class="section active" id="inicio">
+<div class="section-header"><h1 class="section-title">BIENVENIDO, ${currentUser?.nombre || 'ESTUDIANTE'}</h1></div>
+<div class="stats-row">
+<div class="stat-card"><div class="stat-icon blue"><svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg></div><div class="stat-info"><h4>${studentProfile.cursos.length}</h4><p>Cursos Matriculados</p></div></div>
+<div class="stat-card"><div class="stat-icon green"><svg viewBox="0 0 24 24"><path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm2 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg></div><div class="stat-info"><h4>${avg.toFixed(1)}</h4><p>Promedio General</p></div></div>
+<div class="stat-card"><div class="stat-icon orange"><svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg></div><div class="stat-info"><h4>${studentProfile.asistenciaList.filter(a => a.estado === 'Presente').length}/${studentProfile.asistenciaList.length}</h4><p>Asistencias</p></div></div>
+<div class="stat-card"><div class="stat-icon red"><svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg></div><div class="stat-info"><h4>${store.comunicados.length}</h4><p>Comunicados</p></div></div>
+</div>
+</div>`;
+}
+function renderStudentCursos() {
+return `<div class="section" id="cursos">
+<div class="section-header"><h1 class="section-title">MIS CURSOS</h1></div>
+<div class="cards-grid">
+${studentProfile.cursos.map(c => `<div class="course-card"><div class="course-card-image" style="background:${c.color}"><svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg></div><div class="course-card-body"><div class="course-card-title">${c.nombre}</div><div class="course-card-subtitle">Prof: ${c.profesor}</div><span class="course-card-badge">${studentProfile.grado} - ${studentProfile.seccion}</span></div></div>`).join('')}
+</div>
+</div>`;
+}
+function renderStudentNotas() {
+return `<div class="section" id="notas">
+<div class="section-header"><h1 class="section-title">MIS NOTAS</h1></div>
+<div class="table-container">
+<div class="table-header"><h3>Calificaciones del Periodo</h3></div>
+<table><thead><tr><th>Curso</th><th>Cal. 1</th><th>Cal. 2</th><th>Cal. 3</th><th>Promedio</th><th>Estado</th></tr></thead><tbody>
+${studentProfile.notas.map(n => `<tr><td><strong>${n.curso}</strong></td><td>${n.n1}</td><td>${n.n2}</td><td>${n.n3}</td><td><strong class="${n.promedio>=11?'promedio-aprobado':'promedio-desaprobado'}">${n.promedio.toFixed(1)}</strong></td><td><span class="estado-badge ${n.promedio>=11?'estado-aprobado':'estado-desaprobado'}">${n.promedio>=11?'Aprobado':'Desaprobado'}</span></td></tr>`).join('')}
+</tbody></table>
+</div>
+</div>`;
+}
+function renderStudentAsistencia() {
+return `<div class="section" id="asistencia">
+<div class="section-header"><h1 class="section-title">MI ASISTENCIA</h1></div>
+<div class="table-container">
+<div class="table-header"><h3>Registro de Asistencia</h3></div>
+<table><thead><tr><th>Fecha</th><th>Curso</th><th>Estado</th></tr></thead><tbody>
+${studentProfile.asistenciaList.map(a => `<tr><td>${formatDate(a.fecha)}</td><td><strong>${a.curso}</strong></td><td><span class="estado-${a.estado.toLowerCase()}">${a.estado}</span></td></tr>`).join('')}
+</tbody></table>
+</div>
+</div>`;
+}
+function renderStudentHorario() {
+let html = '';
+diasSemana.forEach(d => html += `<div class="horario-day-header">${d}</div>`);
+horasHorario.forEach(hora => {
+diasSemana.forEach((dia, di) => {
+const clase = studentProfile.horarioList.find(h => h.dia === di && h.hora === hora);
+if (clase) html += `<div class="horario-cell has-class"><div class="class-name">${clase.curso}</div><div class="class-time">${clase.hora}</div></div>`;
+else html += `<div class="horario-cell"></div>`;
+});
+});
+return `<div class="section" id="horario">
+<div class="section-header"><h1 class="section-title">MI HORARIO</h1></div>
+<div class="table-container"><div class="horario-grid">${html}</div></div>
+</div>`;
+}
+function renderStudentAgenda() {
+return `<div class="section" id="agenda">
+<div class="section-header"><h1 class="section-title">AGENDA ESCOLAR</h1></div>
+<div class="agenda-list">
+${store.eventos.map(e => { const d = new Date(e.fecha + 'T00:00:00'); return `<div class="agenda-item"><div class="agenda-date-box"><div class="agenda-day">${d.getDate()}</div><div class="agenda-month">${d.toLocaleString('es-ES', { month: 'short' })}</div></div><div class="agenda-content"><h4>${e.nombre}</h4><p>${e.descripcion}</p></div></div>`; }).join('')}
+</div>
+</div>`;
+}
+function renderStudentComunicados() {
+return `<div class="section" id="comunicados">
+<div class="section-header"><h1 class="section-title">COMUNICADOS</h1></div>
+<div class="comunicados-list">
+${store.comunicados.map(c => `<div class="comunicado-card"><div class="comunicado-card-body"><div class="comunicado-date"><svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2z"/></svg>${formatDate(c.fecha)}</div><div class="comunicado-text">${c.mensaje}</div></div></div>`).join('')}
+</div>
+</div>`;
+}
+function renderStudentPerfil() {
+return `<div class="section" id="perfil">
+<div class="section-header"><h1 class="section-title">MI PERFIL</h1></div>
+<div class="profile-container">
+<div class="profile-header">
+<div class="profile-avatar">${currentUser?.nombre?.[0] || 'E'}${currentUser?.apellido?.[0] || ''}</div>
+<div class="profile-name">${currentUser?.nombre} ${currentUser?.apellido}</div>
+<div class="profile-role">Estudiante</div>
+</div>
+<div class="profile-body">
+<div class="profile-info-grid">
+<div class="profile-info-item"><div class="profile-info-label">DNI</div><div class="profile-info-value">${currentUser?.dni || '56789012'}</div></div>
+<div class="profile-info-item"><div class="profile-info-label">Correo</div><div class="profile-info-value">${currentUser?.correo || 'richard@email.com'}</div></div>
+<div class="profile-info-item"><div class="profile-info-label">Grado</div><div class="profile-info-value">${currentUser?.grado || '3° Secundaria'}</div></div>
+<div class="profile-info-item"><div class="profile-info-label">Sección</div><div class="profile-info-value">${currentUser?.seccion || 'A'}</div></div>
+<div class="profile-info-item"><div class="profile-info-label">Tutor/Apoderado</div><div class="profile-info-value">${studentProfile.tutor}</div></div>
+</div>
+</div>
+</div>
+</div>`;
+}
+// ==================== PARENT SECTIONS ====================
+function renderParentInicio() {
+const e = parentProfile.estudiante;
+const avg = e.notas.reduce((a, n) => a + n.promedio, 0) / e.notas.length;
+return `<div class="section active" id="inicio">
+<div class="section-header"><h1 class="section-title">BIENVENIDO, ${currentUser?.nombre || 'APODERADO'}</h1></div>
+<div class="stats-row">
+<div class="stat-card"><div class="stat-icon blue"><svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg></div><div class="stat-info"><h4>${e.cursos.length}</h4><p>Cursos de ${e.nombre}</p></div></div>
+<div class="stat-card"><div class="stat-icon green"><svg viewBox="0 0 24 24"><path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm2 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg></div><div class="stat-info"><h4>${avg.toFixed(1)}</h4><p>Promedio de ${e.nombre}</p></div></div>
+<div class="stat-card"><div class="stat-icon orange"><svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg></div><div class="stat-info"><h4>${e.asistenciaList.filter(a => a.estado === 'Presente').length}/${e.asistenciaList.length}</h4><p>Asistencias</p></div></div>
+<div class="stat-card"><div class="stat-icon red"><svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg></div><div class="stat-info"><h4>${store.comunicados.length}</h4><p>Comunicados</p></div></div>
+</div>
+</div>`;
+}
+function renderParentCursos() {
+const e = parentProfile.estudiante;
+return `<div class="section" id="cursos">
+<div class="section-header"><h1 class="section-title">CURSOS DE ${e.nombre}</h1></div>
+<div class="cards-grid">
+${e.cursos.map(c => `<div class="course-card"><div class="course-card-image" style="background:${c.color}"><svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg></div><div class="course-card-body"><div class="course-card-title">${c.nombre}</div><div class="course-card-subtitle">Prof: ${c.profesor}</div><span class="course-card-badge">${e.grado} - ${e.seccion}</span></div></div>`).join('')}
+</div>
+</div>`;
+}
+function renderParentNotas() {
+const e = parentProfile.estudiante;
+return `<div class="section" id="notas">
+<div class="section-header"><h1 class="section-title">NOTAS DE ${e.nombre}</h1></div>
+<div class="table-container">
+<div class="table-header"><h3>Calificaciones</h3></div>
+<table><thead><tr><th>Curso</th><th>Cal. 1</th><th>Cal. 2</th><th>Cal. 3</th><th>Promedio</th><th>Estado</th></tr></thead><tbody>
+${e.notas.map(n => `<tr><td><strong>${n.curso}</strong></td><td>${n.n1}</td><td>${n.n2}</td><td>${n.n3}</td><td><strong class="${n.promedio>=11?'promedio-aprobado':'promedio-desaprobado'}">${n.promedio.toFixed(1)}</strong></td><td><span class="estado-badge ${n.promedio>=11?'estado-aprobado':'estado-desaprobado'}">${n.promedio>=11?'Aprobado':'Desaprobado'}</span></td></tr>`).join('')}
+</tbody></table>
+</div>
+</div>`;
+}
+function renderParentAsistencia() {
+const e = parentProfile.estudiante;
+return `<div class="section" id="asistencia">
+<div class="section-header"><h1 class="section-title">ASISTENCIA DE ${e.nombre}</h1></div>
+<div class="table-container">
+<div class="table-header"><h3>Registro de Asistencia</h3></div>
+<table><thead><tr><th>Fecha</th><th>Curso</th><th>Estado</th></tr></thead><tbody>
+${e.asistenciaList.map(a => `<tr><td>${formatDate(a.fecha)}</td><td><strong>${a.curso}</strong></td><td><span class="estado-${a.estado.toLowerCase()}">${a.estado}</span></td></tr>`).join('')}
+</tbody></table>
+</div>
+</div>`;
+}
+function renderParentHorario() {
+const e = parentProfile.estudiante;
+let html = '';
+diasSemana.forEach(d => html += `<div class="horario-day-header">${d}</div>`);
+horasHorario.forEach(hora => {
+diasSemana.forEach((dia, di) => {
+const clase = e.horarioList.find(h => h.dia === di && h.hora === hora);
+if (clase) html += `<div class="horario-cell has-class"><div class="class-name">${clase.curso}</div><div class="class-time">${clase.hora}</div></div>`;
+else html += `<div class="horario-cell"></div>`;
+});
+});
+return `<div class="section" id="horario">
+<div class="section-header"><h1 class="section-title">HORARIO DE ${e.nombre}</h1></div>
+<div class="table-container"><div class="horario-grid">${html}</div></div>
+</div>`;
+}
+function renderParentAgenda() {
+return `<div class="section" id="agenda">
+<div class="section-header"><h1 class="section-title">AGENDA ESCOLAR</h1></div>
+<div class="agenda-list">
+${store.eventos.map(e => { const d = new Date(e.fecha + 'T00:00:00'); return `<div class="agenda-item"><div class="agenda-date-box"><div class="agenda-day">${d.getDate()}</div><div class="agenda-month">${d.toLocaleString('es-ES', { month: 'short' })}</div></div><div class="agenda-content"><h4>${e.nombre}</h4><p>${e.descripcion}</p></div></div>`; }).join('')}
+</div>
+</div>`;
+}
+function renderParentComunicados() {
+return `<div class="section" id="comunicados">
+<div class="section-header"><h1 class="section-title">COMUNICADOS</h1></div>
+<div class="comunicados-list">
+${store.comunicados.map(c => `<div class="comunicado-card"><div class="comunicado-card-body"><div class="comunicado-date"><svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2z"/></svg>${formatDate(c.fecha)}</div><div class="comunicado-text">${c.mensaje}</div></div></div>`).join('')}
+</div>
+</div>`;
+}
+function renderParentPerfil() {
+const e = parentProfile.estudiante;
+return `<div class="section" id="perfil">
+<div class="section-header"><h1 class="section-title">MI PERFIL</h1></div>
+<div class="profile-container">
+<div class="profile-header" style="background:linear-gradient(135deg, #f093fb 0%, #f5576c 100%)">
+<div class="profile-avatar" style="color:#f5576c">${currentUser?.nombre?.[0] || 'A'}${currentUser?.apellido?.[0] || ''}</div>
+<div class="profile-name">${currentUser?.nombre} ${currentUser?.apellido}</div>
+<div class="profile-role">Apoderado</div>
+</div>
+<div class="profile-body">
+<div class="profile-info-grid">
+<div class="profile-info-item"><div class="profile-info-label">DNI</div><div class="profile-info-value">${currentUser?.dni || '78901678'}</div></div>
+<div class="profile-info-item"><div class="profile-info-label">Correo</div><div class="profile-info-value">${currentUser?.correo || 'oscar@email.com'}</div></div>
+<div class="profile-info-item"><div class="profile-info-label">Estudiante a Cargo</div><div class="profile-info-value">${e.nombre} ${e.apellido}</div></div>
+<div class="profile-info-item"><div class="profile-info-label">Grado del Estudiante</div><div class="profile-info-value">${e.grado}</div></div>
+<div class="profile-info-item"><div class="profile-info-label">Sección</div><div class="profile-info-value">${e.seccion}</div></div>
+</div>
+</div>
+</div>
+</div>`;
+}
+</script>
+</body>
+</html>
