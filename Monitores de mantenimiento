@@ -1,0 +1,8 @@
+# Ver cron jobs activos
+crontab -l
+
+# Ver logs de cron
+tail -f logs/cron.log
+
+# Ver backups creados
+ls -lh backups/
