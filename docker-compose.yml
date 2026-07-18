@@ -1,64 +1,41 @@
-# ============================================
-# DOCKER COMPOSE - Sistema de Gestión Escolar
-# I.E. Augusto B. Leguía
-# ============================================
-
-version: '3.8'
+version: "3.8"
 
 services:
-  # ============================================
-  # SERVICIO: Aplicación Web (Nginx)
-  # ============================================
   web:
     build:
-      context: .
-      dockerfile: Dockerfile
+      context: ..
+      dockerfile: deploy/Dockerfile
     container_name: sistema-escolar-web
     ports:
       - "8080:80"
     restart: unless-stopped
-    volumes:
-      # Montar archivos en modo desarrollo (opcional)
-      - ./index.html:/usr/share/nginx/html/index.html:ro
-    networks:
-      - sistema-escolar-network
-    healthcheck:
-      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost/"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 10s
-
-  # ============================================
-  # SERVICIO: Nginx con SSL (Producción)
-  # ============================================
-  nginx-proxy:
-    image: nginx:alpine
-    container_name: sistema-escolar-proxy
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - ./docker/nginx.conf:/etc/nginx/nginx.conf:ro
-      - ./docker/ssl:/etc/nginx/ssl:ro
     depends_on:
-      - web
+      - db
+
+  db:
+    image: mysql:8.0
+    container_name: sistema-escolar-mysql
     restart: unless-stopped
-    networks:
-      - sistema-escolar-network
-    profiles:
-      - production
+    environment:
+      MYSQL_ROOT_PASSWORD: change_me
+      MYSQL_DATABASE: sistema_escolar
+      MYSQL_USER: escolar_user
+      MYSQL_PASSWORD: change_me
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
 
-# ============================================
-# REDES
-# ============================================
-networks:
-  sistema-escolar-network:
-    driver: bridge
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: sistema-escolar-pma
+    restart: unless-stopped
+    environment:
+      PMA_HOST: db
+    ports:
+      - "8081:80"
+    depends_on:
+      - db
 
-# ============================================
-# VOLÚMENES (si agregas backend después)
-# ============================================
 volumes:
-  mysql-data:
-    driver: local
+  db_data:
